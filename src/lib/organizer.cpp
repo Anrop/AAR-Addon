@@ -45,6 +45,7 @@ Organizer::Organizer() {
 
 Organizer::~Organizer() {
 	delete em;
+	delete queueThread;
 }
 
 void Organizer::set_hostname(const string& hostname) {
@@ -90,6 +91,10 @@ void Organizer::processEventQueue() {
 	    if (client->status != httpClient::OK)
 	        failCounter++;
 
+	    #ifdef debug
+	    	cout << client->get_result() << endl;
+	    #endif
+
     	delete client;
 	} while (!em->is_empty());
 
@@ -102,7 +107,7 @@ Organizer::status_t Organizer::get_status(const string& s_mission, const string&
     ptree pt_;
     pt_.put("mission", s_mission);
     pt_.put("ip", s_ip);
-    std::ostringstream json_out;
+    ostringstream json_out;
     write_json(json_out, pt_);
 
     cout << "sending:" << endl << json_out.str() << endl;
@@ -115,25 +120,24 @@ Organizer::status_t Organizer::get_status(const string& s_mission, const string&
     if (client->status == httpClient::OK) {
         /* Read json response */
 
-        std::stringstream ss;
+        stringstream ss;
         ss.str(client->get_result());
 
         boost::property_tree::ptree pt;
         boost::property_tree::read_json(ss ,pt);
 
-        string status = pt.get<std::string>("status");
-        result.id = pt.get<std::string>("id");
+        string status = pt.get<string>("status");
+        result.id = pt.get<string>("id");
 
         if (status == "ok")
             result.status = Organizer::OK;
-        else {
-            /* remote server returned non-OK status code. */
-            result.status = Organizer::UNKNOWN;
-        }
-    } else {
-    	/* Socked probably failed */
+        else
+            result.status = Organizer::UNKNOWN; /* remote server returned non-OK status code. */
+
+    } else if (client->status == httpClient::CONNECTION_FAILED)
     	result.status = Organizer::CONNECTION_FAILED;
-    }
+    else
+    	result.status = Organizer::UNKNOWN;
 
     delete client;
     return result;

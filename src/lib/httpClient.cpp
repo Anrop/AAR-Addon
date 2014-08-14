@@ -44,7 +44,7 @@ string httpClient::generateHttpPost(const string& host, const string& url, const
         "Host: " + host + "\r\n" +
         "Connection: close\r\n" +
         "Content-Type: application/json\r\n" +
-        "Content-Length: " + boost::lexical_cast<std::string>(content_length) + "\r\n" +
+        "Content-Length: " + boost::lexical_cast<string>(content_length) + "\r\n" +
         "\r\n" + data;
 
     return response;
@@ -53,7 +53,7 @@ string httpClient::generateHttpPost(const string& host, const string& url, const
 void httpClient::parseData(const string& data) {
 	if (!data.empty()) {
 		httpClient::status = (status_t)boost::lexical_cast<int>(data.substr(9, 3));
-        bool chunked = (data.find("Transfer-Encoding: chunked\r\n") < std::string::npos) ? true : false;
+        bool chunked = (data.find("Transfer-Encoding: chunked\r\n") < string::npos) ? true : false;
 
 		size_t headerEnd = (data.find("\r\n\r\n") + 4);
 		string dataWithoutHeader = data.substr(headerEnd, data.length());
@@ -108,7 +108,7 @@ void httpClient::httpPost(const string& host, const string& data) {
     catch(boost::system::system_error& e)
     {
         //cout << "exception caught" << endl;
-        std::cerr << e.what() << std::endl;
+        cerr << e.what() << endl;
         //cout<<"Info: "  << boost::diagnostic_information(e) <<endl;
         status = httpClient::CONNECTION_FAILED;
     }
