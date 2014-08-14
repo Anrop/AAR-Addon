@@ -33,7 +33,7 @@ private:
 	bool thread_running;
 	EventManager *em;
 	boost::mutex event_mtx;
-	boost::thread *queueThread;
+	boost::thread *queueThread = NULL;
 
 	void processEventQueue();
 };
@@ -66,34 +66,36 @@ void Organizer::add_event(const string& data) {
 	if (!thread_running) {
 		// Start thread!
 		thread_running = true;
-		delete queueThread;
+
+		if (queueThread)
+            delete queueThread;
+
 		queueThread = new boost::thread(boost::bind(&Organizer::processEventQueue, this));
 	}
 }
 
 void Organizer::processEventQueue() {
-	/* Supposed to run from an independent thread. 
+	/* Supposed to run from an independent thread.
 	 This method should recursively spawn a httpClient until EventManager is empty*/
 	int failCounter = 0;
 
 	do {
+		cout << "sending " << boost::lexical_cast<string>(em->count()) << " events" << endl;
 		if (failCounter > 30)
 			break;	// Stop attempting to send. Retry at a later point in time when there is new data to send. Keep old data buffered
 
 		event_mtx.lock();
+		string json_out = em->get_json(true);
+		event_mtx.unlock();
+
 		#ifdef debug
-        	httpClient *client = new httpClient(settings.hostname, "/post.php", em->get_json(true));
+        	httpClient *client = new httpClient(settings.hostname, "/post.php", json_out);
    		#else
-        	httpClient *client = new httpClient(settings.hostname, ("/realtime/:" + settings.id), em->get_json(true));
+        	httpClient *client = new httpClient(settings.hostname, ("/realtime/:" + settings.id), json_out);
     	#endif
-        event_mtx.unlock();
 
 	    if (client->status != httpClient::OK)
 	        failCounter++;
-
-	    #ifdef debug
-	    	cout << client->get_result() << endl;
-	    #endif
 
     	delete client;
 	} while (!em->is_empty());
@@ -109,8 +111,6 @@ Organizer::status_t Organizer::get_status(const string& s_mission, const string&
     pt_.put("ip", s_ip);
     ostringstream json_out;
     write_json(json_out, pt_);
-
-    cout << "sending:" << endl << json_out.str() << endl;
 
     #ifdef debug
         httpClient *client = new httpClient(settings.hostname, "/post.php", json_out.str());

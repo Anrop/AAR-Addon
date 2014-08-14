@@ -11,6 +11,7 @@ public:
     string get_json(bool clear_events);
     void clear_events();
     bool is_empty();
+    int count();
 private:
     void addEvent(const string& data, vector< map<string,string> > &events_);
     string generateJson(vector< map<string,string> > &events_);
@@ -23,6 +24,10 @@ void EventManager::add_event(const string& data) {
 
 bool EventManager::is_empty() {
     return events.empty();
+}
+
+int EventManager::count() {
+    return events.size();
 }
 
 string EventManager::get_json() {
@@ -53,6 +58,8 @@ void EventManager::addEvent(const string& data, vector< map<string,string> > &ev
         *( *(qi::char_-"=")  >> qi::lit("=") >> *(qi::char_-";") >> -qi::lit(";") ),
         ascii::space, contents);                                  
 
+    /* TODO: add  timestamp */
+    
     events_.push_back(contents);
 }
 
