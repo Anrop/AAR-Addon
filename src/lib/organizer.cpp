@@ -65,7 +65,6 @@ void Organizer::add_event(const string& data) {
 	if (!thread_running) {
 		// Start thread!
 		thread_running = true;
-		//boost::thread *thr = new boost::thread(boost::bind(&Organizer::processEventQueue, this));
 		delete queueThread;
 		queueThread = new boost::thread(boost::bind(&Organizer::processEventQueue, this));
 	}
@@ -90,8 +89,6 @@ void Organizer::processEventQueue() {
 
 	    if (client->status != httpClient::OK)
 	        failCounter++;
-	    //else
-	    //	cout << client->get_result() << endl;
 
     	delete client;
 	} while (!em->is_empty());
