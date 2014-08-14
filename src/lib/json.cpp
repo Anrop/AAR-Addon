@@ -28,6 +28,7 @@ public:
     std::string get_json();
     std::string get_json(bool clear_events);
     void clear_events();
+    bool is_empty();
 private:
     void addEvent(const string& data, std::vector< std::map<std::string,std::string> > &events_);
     std::string generateJson(std::vector< std::map<std::string,std::string> > &events_);
@@ -36,6 +37,10 @@ private:
 
 void EventManager::add_event(const string& data) {
     addEvent(data, events);
+}
+
+bool EventManager::is_empty() {
+    return events.empty();
 }
 
 std::string EventManager::get_json() {

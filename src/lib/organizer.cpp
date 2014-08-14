@@ -11,8 +11,10 @@ using namespace std;
 class Organizer {
 public:
 	Organizer();
-	void set_hostname(string hostname);
-	void set_id(string id);
+	~Organizer();
+	void set_hostname(const string& hostname);
+	void set_id(const string& id);
+	void add_event(const string& data);
 
 	enum status_response {OK, UNAUTHORIZED, CONNECTION_FAILED, UNKNOWN};
 	struct status_t {
@@ -29,18 +31,72 @@ public:
 private:
 	config_t settings;
 	bool thread_running;
+	EventManager *em;
+	boost::mutex event_mtx;
+	boost::thread *queueThread;
+
+	void processEventQueue();
 };
 
 Organizer::Organizer() {
 	thread_running = false;
+	em = new EventManager;
 }
 
-void Organizer::set_hostname(string hostname) {
+Organizer::~Organizer() {
+	delete em;
+}
+
+void Organizer::set_hostname(const string& hostname) {
 	settings.hostname = hostname;
 }
 
-void Organizer::set_id(string id) {
+void Organizer::set_id(const string& id) {
 	settings.id = id;
+}
+
+void Organizer::add_event(const string& data) {
+	/* Start a worker thread here if its not already running */
+
+	event_mtx.lock();
+	em->add_event(data);
+	event_mtx.unlock();
+
+	if (!thread_running) {
+		// Start thread!
+		thread_running = true;
+		//boost::thread *thr = new boost::thread(boost::bind(&Organizer::processEventQueue, this));
+		delete queueThread;
+		queueThread = new boost::thread(boost::bind(&Organizer::processEventQueue, this));
+	}
+}
+
+void Organizer::processEventQueue() {
+	/* Supposed to run from an independent thread. 
+	 This method should recursively spawn a httpClient until EventManager is empty*/
+	int failCounter = 0;
+
+	do {
+		if (failCounter > 30)
+			break;	// Stop attempting to send. Retry at a later point in time when there is new data to send. Keep old data buffered
+
+		event_mtx.lock();
+		#ifdef debug
+        	httpClient *client = new httpClient(settings.hostname, "/post.php", em->get_json(true));
+   		#else
+        	httpClient *client = new httpClient(settings.hostname, ("/realtime/:" + settings.id), em->get_json(true));
+    	#endif
+        event_mtx.unlock();
+
+	    if (client->status != httpClient::OK)
+	        failCounter++;
+	    //else
+	    //	cout << client->get_result() << endl;
+
+    	delete client;
+	} while (!em->is_empty());
+
+	thread_running = false;
 }
 
 Organizer::status_t Organizer::get_status(const string& s_mission, const string& s_ip) {
