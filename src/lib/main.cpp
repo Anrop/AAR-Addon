@@ -2,16 +2,12 @@
 
 // http://stackoverflow.com/questions/2114466/creating-json-arrays-in-boost-using-property-trees
 
-#include <boost/asio.hpp>
-#include <boost/array.hpp>
-#include <boost/thread.hpp>
-#include <boost/date_time.hpp>
-#include <iostream>
+#include "common.h"
+#define debug true
 
 #include "httpClient.cpp"
 #include "json.cpp"
-
-#define debug true
+#include "organizer.cpp"
 
 
 /*
@@ -32,15 +28,12 @@ Bygg en funktion som genererar ett HTTP POST anrop med JSON (se http.txt)
 */
 
 using namespace std;
-using boost::asio::ip::tcp;
 
 boost::mutex mtx_;
 boost::mutex s_mtx_;
 
-bool threadRunning;
-std::string out_buffer;
 
-
+/*
 void workerFunc() {
     cout << "thread started" << endl;
     s_mtx_.lock();
@@ -59,77 +52,28 @@ void workerFunc() {
     s_mtx_.unlock();
     cout << "thread done, exiting" << endl;
 }
-
-void addData(const string& data) {
-    mtx_.lock();
-        out_buffer += data;
-    mtx_.unlock();
-
-    // Check if thread is running, if not then start it.
-    s_mtx_.lock();
-        bool _running = threadRunning;
-    s_mtx_.unlock();
-
-    if (!_running) {
-        cout << "thread not running, starting" << endl;
-        s_mtx_.lock();
-            threadRunning = true;
-        s_mtx_.unlock();
-        boost::thread workerThread(workerFunc);
-    }
-}
+*/
 
 /* ----------------------------------------------------------------------------------------------- */
 
-struct config_t {
-    std::string hostname;
-};
-
-config_t config;
-
-/*  Post mission name and ip to server, get id and status response */
-std::string get_id(const string& s_mission, const string& s_ip) {
-    std::string result = "";
-
-    ptree pt_;
-    pt_.put("mission", s_mission);
-    pt_.put("ip", s_ip);
-    std::ostringstream json_out;
-    write_json(json_out, pt_);
-
-    cout << "sending:" << endl << json_out.str() << endl;
-
-    #ifdef debug
-        httpClient *client = new httpClient(config.hostname, "/post.php", json_out.str());
-    #else
-        httpClient *client = new httpClient(config.hostname, "/realtime", json_out.str());
-    #endif
-    if (client->status == httpClient::OK) {
-        /* Read json response */
-
-        std::stringstream ss;
-        ss.str(client->get_result());
-
-        boost::property_tree::ptree pt;
-        boost::property_tree::read_json(ss ,pt);
-
-        std::string status = pt.get<std::string>("status");
-        std::string id = pt.get<std::string>("id");
-
-        if (status == "ok")
-            result = id;
-        else
-            result = status;
-    }
-
-    delete client;
-    return result;
-}
-
 int main()
 {
-    config.hostname = "sigkill.me";
-    cout << "ID from server: " << get_id("zargabad.pbo", "127.0.0.1") << endl;
+    Organizer *organizer = new Organizer();
+    organizer->set_hostname("sigkill.me");
+
+    Organizer::status_t status = organizer->get_status("zargabad.pbo", "127.0.0.1");
+    if (status.status == Organizer::OK) {
+        cout << "Organizer reports OK." << endl << "ID: " << status.id << endl;
+    } else {
+        if (status.status == Organizer::CONNECTION_FAILED) {
+            cout << "Organizer reports connection failed. Check config" << endl;
+        } else {
+            cout << "Organizer reports unknonwn error." << endl;
+        }
+    }
+
+    delete organizer;
+
     /*
     EventManager *em = new EventManager();
     em->add_event("type=player_connected;uid=1337;name=xealot;pid=1000");

@@ -1,9 +1,5 @@
-/* make a http class that makes the call and has the output stored in a member variable */
-#include <boost/asio.hpp>
-#include <boost/array.hpp>
-#include <boost/thread.hpp>
-#include <boost/date_time.hpp>
-#include <iostream>
+#include "common.h"
+
 using namespace std;
 using boost::asio::ip::tcp;
 
@@ -11,14 +7,13 @@ using boost::asio::ip::tcp;
 /* TODO: Add authorization code in http header */
 class httpClient {
 public:
-    httpClient();
     httpClient(const string& url, const string& data);
     httpClient(const string& host, const string& url, const string& data);
     //void post(const string& url, const string& data);
     //void post(const string& host, const string& url, const string& data)
     string get_result();
 
-    enum status_t { OK = 200, BAD_REQUEST = 400, UNAUTHORIZED = 401, FORBIDDEN = 403, NOT_FOUND = 404 };
+    enum status_t { OK = 200, BAD_REQUEST = 400, UNAUTHORIZED = 401, FORBIDDEN = 403, NOT_FOUND = 404, CONNECTION_FAILED = 1000 };
     status_t status;
 private:
     void httpPost(const string& host, const string& data);
@@ -26,10 +21,6 @@ private:
     string generateHttpPost(const string& host, const string& url, const string& data);
     string output;
 };
-
-httpClient::httpClient() {
-    /* */
-}
 
 httpClient::httpClient(const string& url, const string& data) {
     string url_to_parse = url;
@@ -140,9 +131,13 @@ void httpClient::httpPost(const string& host, const string& data) {
 
         httpClient::parseData(buffer);
     }
-    catch (std::exception& e)
+    //catch (std::exception& e)
+    catch(boost::system::system_error& e)
     {
+        //cout << "exception caught" << endl;
         std::cerr << e.what() << std::endl;
+        //cout<<"Info: "  << boost::diagnostic_information(e) <<endl;
+        status = httpClient::CONNECTION_FAILED;
     }
 }
 

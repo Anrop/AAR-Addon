@@ -1,9 +1,4 @@
-#include <sstream>
-#include <iostream>
-#include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/json_parser.hpp>
-#include <boost/spirit/include/qi.hpp>         // Parsing
-#include <boost/fusion/adapted/std_pair.hpp>
+#include "common.h"
 
 using namespace std;
 using namespace boost::spirit;
