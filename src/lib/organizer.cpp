@@ -8,6 +8,7 @@ using namespace std;
 	create a thread if one doesnt exist with a http client and recursively spawn http clients in that thread
 	until the buffer of events is empty
 */
+
 class Organizer {
 public:
 	Organizer();
@@ -80,7 +81,7 @@ void Organizer::processEventQueue() {
 	int failCounter = 0;
 
 	do {
-		cout << "sending " << boost::lexical_cast<string>(em->count()) << " events" << endl;
+		//cout << "sending " << boost::lexical_cast<string>(em->count()) << " events" << endl;
 		if (failCounter > 30)
 			break;	// Stop attempting to send. Retry at a later point in time when there is new data to send. Keep old data buffered
 
@@ -91,13 +92,17 @@ void Organizer::processEventQueue() {
 		#ifdef debug
         	httpClient *client = new httpClient(settings.hostname, "/post.php", json_out);
    		#else
-        	httpClient *client = new httpClient(settings.hostname, ("/realtime/:" + settings.id), json_out);
+        	httpClient *client = new httpClient(settings.hostname, ("/realtime/" + boost::lexical_cast<string>(settings.id)), json_out);
     	#endif
 
 	    if (client->status != httpClient::OK)
 	        failCounter++;
 
     	delete client;
+
+    	/* Sleep thread to let events queue up */
+    	boost::this_thread::sleep(boost::posix_time::milliseconds(THREAD_SLEEP_DELAY));
+
 	} while (!em->is_empty());
 
 	thread_running = false;

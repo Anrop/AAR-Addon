@@ -7,16 +7,16 @@ class CfgPatches
 		requiredVersion = 0.100000;
 		requiredAddons[] = {"CBA_Extended_EventHandlers"};
 		version = "1";
-		projectName = "test extension";
+		projectName = "ARMA Stat track";
 		author = "xealot";
 	};
 };
 
 class Extended_PostInit_EventHandlers 
 {
-    class xea_testExtension 
+    class xea_armastat
 	{
-        Init = "call compile preprocessFileLineNumbers '\xea_testExtension\init.sqf'";
+        Init = "call compile preprocessFileLineNumbers '\xea_armastat\init.sqf'";
 	};
 };
 
