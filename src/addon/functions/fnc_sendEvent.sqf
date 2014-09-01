@@ -1,0 +1,1 @@
+xea_extension callExtension format["event;%1", (_this call xea_fnc_serializeArray)];

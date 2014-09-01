@@ -1,3 +1,5 @@
+// https://community.bistudio.com/wiki/BIS_fnc_MP
+
 /*
 _hostname = getString(configFile >> "XEA_STATTRACK_Settings" >> "hostname");
 _password = getString(configFile >> "XEA_STATTRACK_Settings" >> "password");
@@ -66,8 +68,6 @@ if (isMultiplayer) then {
 
 	/* Periodically send unit positions */
 	[] spawn {
-		while { true } do {
-			sleep 30;
-		};
+		[] call xea_fnc_reportUnitPositions;
 	};
 };

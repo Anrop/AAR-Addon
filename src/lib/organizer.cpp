@@ -117,11 +117,7 @@ Organizer::status_t Organizer::get_status(const string& s_mission, const string&
     ostringstream json_out;
     write_json(json_out, pt_);
 
-    #ifdef debug
-        httpClient *client = new httpClient(settings.hostname, "/post.php", json_out.str());
-    #else
-        httpClient *client = new httpClient(settings.hostname, "/realtime", json_out.str());
-    #endif
+    httpClient *client = new httpClient(settings.hostname, "/realtime", json_out.str());
     if (client->status == httpClient::OK) {
         /* Read json response */
 

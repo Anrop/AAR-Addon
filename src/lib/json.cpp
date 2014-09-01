@@ -58,7 +58,9 @@ void EventManager::addEvent(const string& data, vector< map<string,string> > &ev
         *( *(qi::char_-"=")  >> qi::lit("=") >> *(qi::char_-";") >> -qi::lit(";") ),
         ascii::space, contents);                                  
 
-    /* TODO: add  timestamp */
+    /* Add local timestamp to the event */
+    boost::posix_time::ptime now = boost::posix_time::microsec_clock::local_time();
+    contents["timestamp"] = boost::posix_time::to_simple_string(now);
     
     events_.push_back(contents);
 }

@@ -6,5 +6,5 @@ if (not(_this select 0 == "")) then {
 		["name", _this select 1]
 	];
 
-	_arr call xea_fnc_event;
+	_arr call xea_fnc_sendEvent;
 };

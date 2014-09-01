@@ -5,6 +5,6 @@ for "_i" from 0 to (count _this) -1 do
 	if (_i < ((count _this) -1)) then {
 		_str = _str + ";";
 	};
-};	
+};
 
-xea_extension callExtension format["event;%1", _str];
+_str

@@ -3,4 +3,4 @@ _arr = [
 	["end_type", _this]
 ];
 
-_arr call xea_fnc_event;
+_arr call xea_fnc_sendEvent;

@@ -1,11 +1,12 @@
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-//#define _WIN32_WINNT 0x0601
+#if defined (BOOST_OS_WINDOWS)
+    #define WIN32_LEAN_AND_MEAN
+    #include <windows.h>
+    //#define _WIN32_WINNT 0x0601
+#endif
+
+
 #define THREAD_SLEEP_DELAY 500
-
 #include "common.h"
-//#define debug true
-
 #include "httpClient.cpp"
 #include "json.cpp"
 #include "organizer.cpp"
@@ -14,41 +15,36 @@
     Windows
     COMPILE WITH:
     -D_WIN32_WINNT=0x0501
-    -lboost_system -lboost_thread -lboost_date_time -lwsock32 -lws2_32
-*/
+    -shared -lboost_system -lboost_thread -lboost_date_time -lwsock32 -lws2_32
 
-/*
-    URGENT TODO:
-    Get system timestamp and attach it to outbound json messages
+    Linux
+    -shared -lboost_system -lboost_thread -lboost_date_time -lpthread -m32
 */
 
 using namespace std;
 
 Organizer *organizer = NULL;
 
-extern "C" int APIENTRY DllMain( HINSTANCE hinstDLL, DWORD ul_reason_for_call, LPVOID lpvReserved )
-{
-
-    switch (ul_reason_for_call)
+#if defined(BOOST_OS_WINDOWS)
+    extern "C" int APIENTRY DllMain( HINSTANCE hinstDLL, DWORD ul_reason_for_call, LPVOID lpvReserved )
     {
-    case DLL_PROCESS_ATTACH:
-        //AllocConsole();
-        //freopen("CONOUT$", "w", stdout);
-        break;
-    case DLL_THREAD_ATTACH:
-    case DLL_THREAD_DETACH:
-    case DLL_PROCESS_DETACH:
-        break;
+
+        switch (ul_reason_for_call)
+        {
+        case DLL_PROCESS_ATTACH:
+            //AllocConsole();
+            //freopen("CONOUT$", "w", stdout);
+            break;
+        case DLL_THREAD_ATTACH:
+        case DLL_THREAD_DETACH:
+        case DLL_PROCESS_DETACH:
+            break;
+        }
+        return TRUE;
     }
-    return TRUE;
-}
+#endif
 
-extern "C"
-{
-  __declspec(dllexport) void __stdcall _RVExtension(char *output, int outputSize, const char *function);
-};
-
-void __stdcall _RVExtension(char *output, int outputSize, const char *function)
+extern "C" void _RVExtension(char *output, int outputSize, const char *function)
 {
     if(!organizer)
         organizer = new Organizer();
@@ -63,7 +59,7 @@ void __stdcall _RVExtension(char *output, int outputSize, const char *function)
     }
     else if (function_ == "status") {
         /* TODO: Get IP of current machine */
-        Organizer::status_t status = organizer->get_status(data, "127.0.0.1");
+        Organizer::status_t status = organizer->get_status(data, "NOT_IMPLEMENTED");
         if (status.status == Organizer::OK) {
             organizer->set_id(status.id);
             snprintf(output, outputSize, "%s", status.id.c_str());
