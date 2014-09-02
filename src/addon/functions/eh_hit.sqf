@@ -1,4 +1,4 @@
-/*
+/* HITPART
 target: Object - Object that got injured/damaged.
 shooter: Object - Unit that inflicted the damage. If injured by a vehicle impact or a fall the target itself is returned, or, in case of explosions, the null object. In case of explosives that were planted by someone (e.g. satchel charges), that unit is returned.
 bullet: Object - Object that was fired.
@@ -12,16 +12,31 @@ surface: String - Surface type struck.
 direct: Boolean - true if object was directly hit, false if it was hit by indirect/splash damage.
 */
 
-_unit = [-1, name (_this select 0)];
+/* HIT
+unit: Object - Object the event handler is assigned to 
+causedBy: Object - Object that caused the damage.
+Contains the unit itself in case of collisions. 
+damage: Number - Level of damage caused by the hit
+*/
+
+_victim = [-1, name (_this select 0)];
 if (isPlayer (_this select 0)) then {
-	_unit = [getPlayerUID (_this select 0), _unit select 1];
+	_victim = [getPlayerUID (_this select 0), _victim select 1];
+};
+
+_attacker = [-1, name (_this select 1)];
+if (isPlayer (_this select 1)) then {
+	_attacker = [getPlayerUID (_this select 1), _attacker select 1];
 };
 
 _arr = [
 	["type", "unit_hit"],
-	["victim_uid", _unit select 0],
+	["victim_uid", _victim select 0],
 	["victim_nid", netId (_this select 0)],
-	["victim_name", _unit select 1]
+	["victim_name", _victim select 1],
+	["attacker_uid", _attacker select 0],
+	["attacker_nid", netId (_this select 1)],
+	["attacker_name", _attacker select 1]
 ];
 
 _arr call xea_fnc_sendEvent;

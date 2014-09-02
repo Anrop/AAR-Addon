@@ -9,7 +9,7 @@ class httpClient {
 public:
     httpClient(const string& url, const string& data);
     httpClient(const string& host, const string& url, const string& data);
-    string get_result();
+    string getResult();
 
     enum status_t { OK = 200, BAD_REQUEST = 400, UNAUTHORIZED = 401, FORBIDDEN = 403, NOT_FOUND = 404, CONNECTION_FAILED = 1000 };
     status_t status;
@@ -114,6 +114,6 @@ void httpClient::httpPost(const string& host, const string& data) {
     }
 }
 
-string httpClient::get_result() {
+string httpClient::getResult() {
 	return output;
 }

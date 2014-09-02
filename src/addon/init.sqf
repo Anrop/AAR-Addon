@@ -5,6 +5,7 @@ _hostname = getString(configFile >> "XEA_STATTRACK_Settings" >> "hostname");
 _password = getString(configFile >> "XEA_STATTRACK_Settings" >> "password");
 */
 _hostname = "armastats.sigkill.me";
+_positionReportDelay = 1;	// Minutes
 xea_extension = "armastat";	// dll
 
 if (isMultiplayer) then {
@@ -22,11 +23,8 @@ if (isMultiplayer) then {
 
 	/* Initialize plugin. Get unique ID from server */
 	xea_extension callExtension format["setup;%1", _hostname];
-
-	//if (!(missionName == "intro1")) then { 
 	xea_stattrack_id = xea_extension callExtension format["status;%1", missionName];
-	diag_log format["got id %1 from server", xea_stattrack_id];
-	//};
+	//diag_log format["got id %1 from server", xea_stattrack_id];
 
 	/*
 		--------------------------------------------------------------------------------------------------------------
@@ -67,7 +65,7 @@ if (isMultiplayer) then {
 	};
 
 	/* Periodically send unit positions */
-	[] spawn {
-		[] call xea_fnc_reportUnitPositions;
+	(_positionReportDelay) spawn {
+		(_this*60) call xea_fnc_reportUnitPositions;
 	};
 };

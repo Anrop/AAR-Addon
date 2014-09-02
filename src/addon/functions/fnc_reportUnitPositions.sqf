@@ -7,14 +7,14 @@ while { true } do {
 
 		_arr = [
 			["type", "unit_position"],
-			["pos_x", _this select 1],
-			["pos_y", _this select 4],
-			["pos_z", _unit select 0],
-			["nid", netId (_this select 0)],
-			["uid", ],
+			["pos_x", (getPosASL _x select 0)],
+			["pos_y", (getPosASL _x select 1)],
+			["pos_z", (getPosASL _x select 2)],
+			["nid", netId _x],
+			["uid", _unit select 0],
 			["name", _unit select 1]
 		];
 
 	} forEach allUnits;
-	sleep 30;
+	sleep _this;
 };

@@ -6,11 +6,11 @@ using boost::property_tree::ptree;
 
 class EventManager {
 public:
-    void add_event(const string& data);
-    string get_json();
-    string get_json(bool clear_events);
-    void clear_events();
-    bool is_empty();
+    void addEvent(const string& data);
+    string getJson();
+    string getJson(bool clear_events);
+    void clearEvents();
+    bool isEmpty();
     int count();
 private:
     void addEvent(const string& data, vector< map<string,string> > &events_);
@@ -18,11 +18,11 @@ private:
     vector< map<string,string> > events; 
 };
 
-void EventManager::add_event(const string& data) {
+void EventManager::addEvent(const string& data) {
     addEvent(data, events);
 }
 
-bool EventManager::is_empty() {
+bool EventManager::isEmpty() {
     return events.empty();
 }
 
@@ -30,20 +30,20 @@ int EventManager::count() {
     return events.size();
 }
 
-string EventManager::get_json() {
-    return EventManager::get_json(false);
+string EventManager::getJson() {
+    return EventManager::getJson(false);
 }
 
-string EventManager::get_json(bool clear_events) {
+string EventManager::getJson(bool clear_events) {
     string result = generateJson(events);
     
     if (clear_events)
-        EventManager::clear_events();
+        EventManager::clearEvents();
 
     return result;
 }
 
-void EventManager::clear_events() {
+void EventManager::clearEvents() {
     events.clear();
 }
 
@@ -80,7 +80,7 @@ string EventManager::generateJson(vector< map<string,string> > &events_) {
         children.push_back(make_pair("", child));
     }
 
-    pt.add_child("event", children);
+    pt.add_child("events", children);
 
     ostringstream out; 
     write_json(out, pt);

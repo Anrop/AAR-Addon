@@ -1,6 +1,6 @@
 /* Initialize functions */
 xea_fnc_sendEvent = compile preprocessFile "\xea_armastat\functions\fnc_sendEvent.sqf";
-xea_fnc_serializeArray = compile preprocessFile "\xea_armastat\functons\fnc_serializeArray.sqf";
+xea_fnc_serializeArray = compile preprocessFile "\xea_armastat\functions\fnc_serializeArray.sqf";
 xea_fnc_playerConnected = compile preprocessFile "\xea_armastat\functions\eh_playerConnected.sqf";
 xea_fnc_playerDisconnected = compile preprocessFile "\xea_armastat\functions\eh_playerDisconnected.sqf";
 xea_fnc_ehFired = compile preprocessFile "\xea_armastat\functions\eh_fired.sqf";

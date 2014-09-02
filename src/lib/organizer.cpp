@@ -13,9 +13,9 @@ class Organizer {
 public:
 	Organizer();
 	~Organizer();
-	void set_hostname(const string& hostname);
-	void set_id(const string& id);
-	void add_event(const string& data);
+	void setHostname(const string& hostname);
+	void setId(const string& id);
+	void addEvent(const string& data);
 
 	enum status_response {OK, UNAUTHORIZED, CONNECTION_FAILED, UNKNOWN};
 	struct status_t {
@@ -28,7 +28,7 @@ public:
     	string id;
 	};
 
-	Organizer::status_t get_status(const string& s_mission, const string& s_ip);
+	Organizer::status_t getStatus(const string& mission, const string& ip);
 private:
 	config_t settings;
 	bool thread_running;
@@ -49,19 +49,19 @@ Organizer::~Organizer() {
 	delete queueThread;
 }
 
-void Organizer::set_hostname(const string& hostname) {
+void Organizer::setHostname(const string& hostname) {
 	settings.hostname = hostname;
 }
 
-void Organizer::set_id(const string& id) {
+void Organizer::setId(const string& id) {
 	settings.id = id;
 }
 
-void Organizer::add_event(const string& data) {
+void Organizer::addEvent(const string& data) {
 	/* Start a worker thread here if its not already running */
 
 	event_mtx.lock();
-	em->add_event(data);
+	em->addEvent(data);
 	event_mtx.unlock();
 
 	if (!thread_running) {
@@ -86,7 +86,7 @@ void Organizer::processEventQueue() {
 			break;	// Stop attempting to send. Retry at a later point in time when there is new data to send. Keep old data buffered
 
 		event_mtx.lock();
-		string json_out = em->get_json(true);
+		string json_out = em->getJson(true);
 		event_mtx.unlock();
 
 		#ifdef debug
@@ -103,17 +103,17 @@ void Organizer::processEventQueue() {
     	/* Sleep thread to let events queue up */
     	boost::this_thread::sleep(boost::posix_time::milliseconds(THREAD_SLEEP_DELAY));
 
-	} while (!em->is_empty());
+	} while (!em->isEmpty());
 
 	thread_running = false;
 }
 
-Organizer::status_t Organizer::get_status(const string& s_mission, const string& s_ip) {
+Organizer::status_t Organizer::getStatus(const string& mission, const string& ip) {
 	status_t result;
 
     ptree pt_;
-    pt_.put("mission", s_mission);
-    pt_.put("ip", s_ip);
+    pt_.put("mission", mission);
+    pt_.put("ip", ip);
     ostringstream json_out;
     write_json(json_out, pt_);
 
@@ -122,7 +122,7 @@ Organizer::status_t Organizer::get_status(const string& s_mission, const string&
         /* Read json response */
 
         stringstream ss;
-        ss.str(client->get_result());
+        ss.str(client->getResult());
 
         boost::property_tree::ptree pt;
         boost::property_tree::read_json(ss ,pt);
