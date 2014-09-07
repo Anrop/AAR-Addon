@@ -15,6 +15,8 @@ while { true } do {
 			["name", _unit select 1]
 		];
 
+		_arr call xea_fnc_sendEvent;
+
 	} forEach allUnits;
 	sleep _this;
 };

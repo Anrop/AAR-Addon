@@ -6,6 +6,7 @@ _password = getString(configFile >> "XEA_STATTRACK_Settings" >> "password");
 */
 _hostname = "armastats.sigkill.me";
 _positionReportDelay = 1;	// Minutes
+_positionReporting = true;
 xea_extension = "armastat";	// dll
 
 if (isMultiplayer) then {
@@ -24,22 +25,55 @@ if (isMultiplayer) then {
 	/* Initialize plugin. Get unique ID from server */
 	xea_extension callExtension format["setup;%1", _hostname];
 	xea_stattrack_id = xea_extension callExtension format["status;%1", missionName];
-	//diag_log format["got id %1 from server", xea_stattrack_id];
 
 	/*
 		--------------------------------------------------------------------------------------------------------------
 					MISSION INIT
 	*/
 
-	["xea_armastat_connected", "onPlayerConnected", {
-		[_uid, _name] call xea_fnc_playerConnected;
-	}] call BIS_fnc_addStackedEventHandler;
+	/* TODO: check if dedicated creates a dummy user for connection events */
+	if (isServer) then {
+		["xea_armastat_connected", "onPlayerConnected", {
+			[_uid, _name] call xea_fnc_playerConnected;
+		}] call BIS_fnc_addStackedEventHandler;
 
-	["xea_armastat_disconnected", "onPlayerDisconnected", {
-		[_uid, _name] call xea_fnc_playerDisconnected;
-	}] call BIS_fnc_addStackedEventHandler;
+		["xea_armastat_disconnected", "onPlayerDisconnected", {
+			[_uid, _name] call xea_fnc_playerDisconnected;
+		}] call BIS_fnc_addStackedEventHandler;
 
-	addMissionEventHandler ["Ended", { (_this) call xea_fnc_missionEnded }];
+		addMissionEventHandler ["Ended", { (_this) call xea_fnc_missionEnded }];
+
+	} else {
+		/* Not server. attempt to inject functions to the server to broadcast CBA events (assumes server has cba) */
+		["xea_armastat_playerConnected", {
+			_this call xea_fnc_playerConnected;
+		}] call CBA_fnc_addEventHandler;
+
+		["xea_armastat_playerDisconnected", {
+			_this call xea_fnc_playerDisconnected;
+		}] call CBA_fnc_addEventHandler;
+
+		["xea_armastat_missionEnded", {
+			_this call xea_fnc_missionEnded;
+		}] call CBA_fnc_addEventHandler;
+
+		xea_fnc_armastat_injectedHandler = {
+			if (isNil "xea_armastat_hasInjectedHandler") then {
+				xea_armastat_hasInjectedHandler = true;
+
+				["xea_armastat_connected", "onPlayerConnected", {
+					["xea_armastat_playerConnected", [_uid, _name]] call CBA_fnc_globalEvent; 
+				}] call BIS_fnc_addStackedEventHandler;
+				["xea_armastat_disconnected", "onPlayerDisconnected", {
+					["xea_armastat_playerDisconnected", [_uid, _name]] call CBA_fnc_globalEvent; 
+				}] call BIS_fnc_addStackedEventHandler;
+
+				addMissionEventHandler ["Ended", { ["xea_armastat_missionEnded" ,_this] call CBA_fnc_globalEvent; }];
+			};
+		};
+
+		[xea_fnc_armastat_injectedHandler,"BIS_fnc_spawn",false,false] call BIS_fnc_MP;
+	};
 
 	/*
 		--------------------------------------------------------------------------------------------------------------
@@ -56,7 +90,6 @@ if (isMultiplayer) then {
 		while { true } do {
 			{
 				if (!(_x getVariable ["xea_stattrack", false])) then {
-					/* New unit - Add EHs */
 					_x call xea_fnc_addEventHandlers;
 				};
 			} foreach allUnits;
@@ -65,7 +98,9 @@ if (isMultiplayer) then {
 	};
 
 	/* Periodically send unit positions */
-	(_positionReportDelay) spawn {
-		(_this*60) call xea_fnc_reportUnitPositions;
+	if (_positionReporting) then {
+		(_positionReportDelay) spawn {
+			(_this*60) call xea_fnc_reportUnitPositions;
+		};
 	};
 };
