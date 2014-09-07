@@ -7,9 +7,9 @@ while { true } do {
 
 		_arr = [
 			["type", "unit_position"],
-			["pos_x", (getPosASL _x select 0)],
-			["pos_y", (getPosASL _x select 1)],
-			["pos_z", (getPosASL _x select 2)],
+			["posX", (getPosASL _x select 0)],
+			["posY", (getPosASL _x select 1)],
+			["posZ", (getPosASL _x select 2)],
 			["nid", netId _x],
 			["uid", _unit select 0],
 			["name", _unit select 1]

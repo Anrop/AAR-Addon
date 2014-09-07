@@ -11,7 +11,7 @@ public:
     httpClient(const string& host, const string& url, const string& data);
     string getResult();
 
-    enum status_t { OK = 200, BAD_REQUEST = 400, UNAUTHORIZED = 401, FORBIDDEN = 403, NOT_FOUND = 404, CONNECTION_FAILED = 1000 };
+    enum status_t { OK = 201, BAD_REQUEST = 400, UNAUTHORIZED = 401, FORBIDDEN = 403, NOT_FOUND = 404, CONNECTION_FAILED = 1000 };
     status_t status;
 private:
     void httpPost(const string& host, const string& data);
@@ -52,6 +52,7 @@ string httpClient::generateHttpPost(const string& host, const string& url, const
 
 void httpClient::parseData(const string& data) {
 	if (!data.empty()) {
+
 		httpClient::status = (status_t)boost::lexical_cast<int>(data.substr(9, 3));
         bool chunked = (data.find("Transfer-Encoding: chunked\r\n") < string::npos) ? true : false;
 

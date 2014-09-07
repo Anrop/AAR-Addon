@@ -4,9 +4,9 @@
 _hostname = getString(configFile >> "XEA_STATTRACK_Settings" >> "hostname");
 _password = getString(configFile >> "XEA_STATTRACK_Settings" >> "password");
 */
-_hostname = "armastats.sigkill.me";
+_hostname = "arma-stats.herokuapp.com";
 _positionReportDelay = 1;	// Minutes
-_positionReporting = true;
+_positionReporting = false;	// Disabled until delta reporting is implemented to prevent spam
 xea_extension = "armastat";	// dll
 
 if (isMultiplayer) then {
@@ -42,7 +42,6 @@ if (isMultiplayer) then {
 		}] call BIS_fnc_addStackedEventHandler;
 
 		addMissionEventHandler ["Ended", { (_this) call xea_fnc_missionEnded }];
-
 	} else {
 		/* Not server. attempt to inject functions to the server to broadcast CBA events (assumes server has cba) */
 		["xea_armastat_playerConnected", {

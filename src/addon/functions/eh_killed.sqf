@@ -27,7 +27,13 @@ _arr = [
 	["killer_name", _killer select 1],
 	["killer_nid", netId (_this select 1)],
 	["killer_side", format["%1", side (_this select 1)]],
-	["suicide", _suicide]
+	["suicide", _suicide],
+	["victim_posX", (getPosASL (_this select 0)) select 0],
+	["victim_posY", (getPosASL (_this select 0)) select 1],
+	["victim_posZ", (getPosASL (_this select 0)) select 2],
+	["killer_posX", (getPosASL (_this select 1)) select 0],
+	["killer_posY", (getPosASL (_this select 1)) select 1],
+	["killer_posZ", (getPosASL (_this select 1)) select 2],
 ];
 
 _arr call xea_fnc_sendEvent;

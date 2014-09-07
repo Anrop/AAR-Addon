@@ -81,7 +81,7 @@ void Organizer::processEventQueue() {
 	int failCounter = 0;
 
 	do {
-		//cout << "sending " << boost::lexical_cast<string>(em->count()) << " events" << endl;
+		cout << "sending " << boost::lexical_cast<string>(em->count()) << " events" << endl;
 		if (failCounter > 30)
 			break;	// Stop attempting to send. Retry at a later point in time when there is new data to send. Keep old data buffered
 
@@ -92,7 +92,7 @@ void Organizer::processEventQueue() {
 		#ifdef debug
         	httpClient *client = new httpClient(settings.hostname, "/post.php", json_out);
    		#else
-        	httpClient *client = new httpClient(settings.hostname, ("/realtime/" + boost::lexical_cast<string>(settings.id)), json_out);
+        	httpClient *client = new httpClient(settings.hostname, ("/api/missions/" + boost::lexical_cast<string>(settings.id) + "/events"), json_out);
     	#endif
 
 	    if (client->status != httpClient::OK)
@@ -117,23 +117,17 @@ Organizer::status_t Organizer::getStatus(const string& mission, const string& ip
     ostringstream json_out;
     write_json(json_out, pt_);
 
-    httpClient *client = new httpClient(settings.hostname, "/realtime", json_out.str());
+    httpClient *client = new httpClient(settings.hostname, "/api/missions", json_out.str());
     if (client->status == httpClient::OK) {
         /* Read json response */
-
         stringstream ss;
         ss.str(client->getResult());
 
         boost::property_tree::ptree pt;
         boost::property_tree::read_json(ss ,pt);
 
-        string status = pt.get<string>("status");
-        result.id = pt.get<string>("id");
-
-        if (status == "ok")
-            result.status = Organizer::OK;
-        else
-            result.status = Organizer::UNKNOWN; /* remote server returned non-OK status code. */
+        result.id = pt.get<string>("_id");
+        result.status = Organizer::OK;
 
     } else if (client->status == httpClient::CONNECTION_FAILED)
     	result.status = Organizer::CONNECTION_FAILED;

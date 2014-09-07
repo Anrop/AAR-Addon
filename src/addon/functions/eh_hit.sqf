@@ -36,7 +36,13 @@ _arr = [
 	["victim_name", _victim select 1],
 	["attacker_uid", _attacker select 0],
 	["attacker_nid", netId (_this select 1)],
-	["attacker_name", _attacker select 1]
+	["attacker_name", _attacker select 1],
+	["victim_posX", (getPosASL (_this select 0)) select 0],
+	["victim_posY", (getPosASL (_this select 0)) select 1],
+	["victim_posZ", (getPosASL (_this select 0)) select 2],
+	["attacker_posX", (getPosASL (_this select 1)) select 0],
+	["attacker_posY", (getPosASL (_this select 1)) select 1],
+	["attacker_posZ", (getPosASL (_this select 1)) select 2]
 ];
 
 _arr call xea_fnc_sendEvent;
