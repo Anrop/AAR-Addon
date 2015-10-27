@@ -20,6 +20,6 @@ Please refer to their respective manuals for a complete installation guide.
 Once the two pre-requisites have been installed you may simply build the environment with:  
 $ docker-compose build
 
-This will install the toolchain necessary to compile Windows binaries and also prepare all the dependencies such as BOOST. 
-Finally you can trigger a build of the DLL by running the docker app like so:  
+This will install the toolchain necessary to compile the binaries and also prepare all the dependencies such as BOOST. 
+Finally you can trigger a build of the libraries by running the docker app like so:  
 $ docker-compose up
