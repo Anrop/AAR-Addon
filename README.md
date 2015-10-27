@@ -1,6 +1,8 @@
 arma_stat_track
 ===============
 
+[![Build Status](https://travis-ci.org/Anrop/Arma-Stats-Track-Addon.svg)](https://travis-ci.org/Anrop/Arma-Stats-Track-Addon)
+
 ARMA stats tracker client project.
 This repository handles the game server side of the stats tracking by providing the in-game addon for gathering game related data and the library necessary to provision the data to a backend.
 
