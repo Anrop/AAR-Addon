@@ -1,2 +1,3 @@
 cd /code/src/lib/
-make
+make windows
+make linux

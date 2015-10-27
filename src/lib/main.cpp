@@ -1,8 +1,7 @@
-//#if defined (BOOST_OS_WINDOWS)
+#if BOOST_OS_WINDOWS
     #define WIN32_LEAN_AND_MEAN
     #include <windows.h>
-    //#define _WIN32_WINNT 0x0601
-//#endif
+#endif
 
 
 #define THREAD_SLEEP_DELAY 500
@@ -25,7 +24,7 @@ using namespace std;
 
 Organizer *organizer = NULL;
 
-//#if defined(BOOST_OS_WINDOWS)
+#if BOOST_OS_WINDOWS
     extern "C" int APIENTRY DllMain( HINSTANCE hinstDLL, DWORD ul_reason_for_call, LPVOID lpvReserved )
     {
 
@@ -42,9 +41,13 @@ Organizer *organizer = NULL;
         }
         return TRUE;
     }
-//#endif
+#endif
 
-extern "C" void __stdcall _RVExtension(char *output, int outputSize, const char *function)
+#if BOOST_OS_WINDOWS
+    extern "C" void __stdcall _RVExtension(char *output, int outputSize, const char *function)
+#else
+    extern "C" void _RVExtension(char *output, int outputSize, const char *function)
+#endif
 {
     if(!organizer)
         organizer = new Organizer();
