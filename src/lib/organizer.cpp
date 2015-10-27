@@ -34,7 +34,7 @@ private:
 	bool thread_running;
 	EventManager *em;
 	boost::mutex event_mtx;
-	boost::thread *queueThread = NULL;
+	boost::thread *queueThread;
 
 	void processEventQueue();
 };
@@ -42,6 +42,7 @@ private:
 Organizer::Organizer() {
 	thread_running = false;
 	em = new EventManager;
+	queueThread = NULL;
 }
 
 Organizer::~Organizer() {
