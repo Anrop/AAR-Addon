@@ -45,4 +45,4 @@ _arr = [
 	["attacker_posZ", (getPosASL (_this select 1)) select 2]
 ];
 
-_arr call xea_fnc_sendEvent;
+//_arr call xea_fnc_sendEvent;
