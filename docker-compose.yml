@@ -1,4 +1,12 @@
 build:
-  build: .
+  image: anrop/arma-extensions
+  command: sh build.sh
   volumes:
     - .:/code
+  working_dir: /code
+package:
+  image: anrop/mikero-tools
+  command: sh package.sh
+  volumes:
+    - .:/code
+  working_dir: /code
