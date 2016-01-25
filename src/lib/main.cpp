@@ -3,8 +3,6 @@
     #include <windows.h>
 #endif
 
-
-#include "common.h"
 #include "EventManager.cpp"
 #include "httpClient.cpp"
 #include "Organizer.cpp"

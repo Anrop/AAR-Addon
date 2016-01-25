@@ -3,6 +3,7 @@ windows:
 		-fPIC \
 		-w \
 		-Os \
+		-std=c++11 \
 		-D_WIN32_WINNT=0x0501 \
 		-DWINVER=0x0501 \
 		-I$(BOOST_DIR) \
@@ -18,6 +19,7 @@ linux:
 		-fPIC \
 		-w \
 		-Os \
+		-std=c++11 \
 		-I$(BOOST_DIR) \
 		-L$(BOOST_DIR)/stage_linux/lib/ \
 		-lboost_system \
@@ -29,6 +31,7 @@ linux:
 test:
 	g++ \
 		-o bin/test src/test/main.cpp $(wildcard src/test/**/*.cpp) \
+		-std=c++11 \
 		-Isrc/lib \
 		-Lbin \
 		-larmastat \

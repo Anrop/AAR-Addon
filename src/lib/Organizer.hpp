@@ -1,4 +1,4 @@
-#include "common.h"
+#include <boost/thread.hpp>
 
 #define THREAD_SLEEP_DELAY 500
 
@@ -34,7 +34,7 @@ public:
 private:
   config_t settings;
   bool thread_running;
-  EventManager *em;
+  EventManager em;
   boost::mutex event_mtx;
   boost::thread *queueThread;
 

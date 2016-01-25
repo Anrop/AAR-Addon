@@ -4,17 +4,23 @@
 SCENARIO( "EventManager can generate Json", "[EventManager]" ) {
 
     GIVEN( "An EventManager with one event" ) {
-        EventManager *em = new EventManager;
-        em->addEvent( "test=test" );
+        EventManager em;
+        em.addEvent( "{\"test\":\"test\"}" );
 
-        REQUIRE( em->count() == 1 );
-        REQUIRE( !em->isEmpty() );
+        REQUIRE( em.count() == 1 );
 
-        WHEN( "and json is generated" ) {
-            std::string json = em->getJson();
+        WHEN( "json is generated" ) {
+            std::string jsonStr = em.getJson();
+            json j = json::parse(jsonStr);
 
-            THEN( "it should generate non-empty json" ) {
-                REQUIRE( json.length() > 0 );
+            THEN( "it should contain an events array with one event" ) {
+                REQUIRE( j["events"].size() == 1 );
+            }
+
+            THEN( "it should contain a valid event" ) {
+                json event = j["events"][0];
+                REQUIRE( event["test"] == "test" );
+                REQUIRE( event["timestamp"].is_string() );
             }
         }
     }
