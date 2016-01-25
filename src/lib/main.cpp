@@ -4,11 +4,10 @@
 #endif
 
 
-#define THREAD_SLEEP_DELAY 500
 #include "common.h"
+#include "EventManager.cpp"
 #include "httpClient.cpp"
-#include "json.cpp"
-#include "organizer.cpp"
+#include "Organizer.cpp"
 
 /*
     Windows

@@ -6,4 +6,4 @@ before_install:
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
 script:
-  - docker-compose up
+  - docker-compose run build
