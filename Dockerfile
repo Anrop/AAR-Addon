@@ -2,7 +2,7 @@
 # TODO: Make a nicer way to get gcc version. But only major and minor
 
 FROM rubicks/mingw
-RUN apt-get install -y libboost-all-dev gcc-multilib g++-multilib
+RUN apt-get update && apt-get install -y libboost-all-dev gcc-multilib g++-multilib
 RUN wget -P /tmp/ http://downloads.sourceforge.net/project/boost/boost/1.59.0/boost_1_59_0.tar.bz2
 RUN tar -xf /tmp/boost_1_59_0.tar.bz2 -C /tmp/
 RUN export PATH=/usr/i586-mingw32msvc:$PATH
