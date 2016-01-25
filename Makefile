@@ -25,3 +25,11 @@ linux:
 		-lboost_date_time \
 		-lpthread \
 		-m32
+
+test:
+	g++ \
+		-o bin/test src/test/main.cpp $(wildcard src/test/**/*.cpp) \
+		-Isrc/lib \
+		-Lbin \
+		-larmastat \
+		-m32
