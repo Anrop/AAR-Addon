@@ -1,6 +1,3 @@
-MINGW_COMPILER = i586-mingw32msvc-g++
-BOOST_DIR = /tmp/boost_1_59_0/
-
 windows:
 	$(MINGW_COMPILER) -shared -o armastat.dll main.cpp \
 		-w \
