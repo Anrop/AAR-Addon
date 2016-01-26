@@ -1,4 +1,7 @@
 #include "httpClient.hpp"
+#include <boost/asio.hpp>
+
+using boost::asio::ip::tcp;
 
 httpClient::httpClient(const string& url, const string& data) {
     string url_to_parse = url;

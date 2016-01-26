@@ -1,7 +1,4 @@
-#include "common.h"
-
 using namespace std;
-using boost::asio::ip::tcp;
 
 /* */
 /* TODO: Add authorization code in http header */

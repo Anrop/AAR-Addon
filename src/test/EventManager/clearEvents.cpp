@@ -4,18 +4,18 @@
 SCENARIO( "EventManager can clear events", "[EventManager]" ) {
 
     GIVEN( "An EventManager with one event" ) {
-        EventManager *em = new EventManager;
-        em->addEvent( "test=test" );
+        EventManager em;
+        em.addEvent( "{\"test\":\"test\"}" );
 
-        REQUIRE( em->count() == 1 );
-        REQUIRE( !em->isEmpty() );
+        REQUIRE( em.count() == 1 );
+        REQUIRE( !em.isEmpty() );
 
         WHEN( "and events are cleared" ) {
-            em->clearEvents();
+            em.clearEvents();
 
             THEN( "it contains zero item and is empty" ) {
-                REQUIRE( em->count() == 0 );
-                REQUIRE( em->isEmpty() );
+                REQUIRE( em.count() == 0 );
+                REQUIRE( em.isEmpty() );
             }
         }
     }
