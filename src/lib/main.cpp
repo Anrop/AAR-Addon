@@ -43,7 +43,7 @@ Organizer *organizer = NULL;
 #if BOOST_OS_WINDOWS
     extern "C" void __stdcall _RVExtension(char *output, int outputSize, const char *function)
 #else
-    extern "C" void _RVExtension(char *output, int outputSize, const char *function)
+    extern "C" void RVExtension(char *output, int outputSize, const char *function)
 #endif
 {
     if(!organizer)
