@@ -71,12 +71,12 @@ void Organizer::processEventQueue() {
     thread_running = false;
 }
 
-Organizer::status_t Organizer::getStatus(const string& mission, const string& ip) {
+Organizer::status_t Organizer::getStatus(const string& mission, const string& world) {
     status_t result;
 
     json missionJson;
-    missionJson["mission"] = mission;
-    missionJson["ip"] = ip;
+    missionJson["name"] = mission;
+    missionJson["world"] = world;
 
     httpClient client = httpClient(settings.hostname, "/api/missions", missionJson.dump());
     if (client.status == httpClient::OK) {
