@@ -4,6 +4,8 @@ windows:
 		-w \
 		-Os \
 		-std=c++11 \
+		-static-libgcc \
+		-static-libstdc++ \
 		-D_WIN32_WINNT=0x0501 \
 		-DWINVER=0x0501 \
 		-I$(BOOST_DIR) \
