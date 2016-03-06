@@ -72,7 +72,7 @@ void Organizer::processEventQueue() {
         event_mtx.unlock();
 
         if (settings.hostname.length() > 0 && settings.id.length() > 0) {
-            httpClient client = httpClient(settings.hostname, ("/api/missions/" + settings.id + "/events"), json_out);
+            httpClient client = httpClient(settings.hostname, ("/missions/" + settings.id + "/events"), json_out);
 
             if (client.status != httpClient::OK) {
                 failCounter++;
