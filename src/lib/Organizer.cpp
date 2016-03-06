@@ -26,14 +26,14 @@ void Organizer::setMissionId(const string& id) {
     settings.id = id;
 }
 
-void Organizer::addEvent(const string& data) {
+EventManager::event_added Organizer::addEvent(const string& data) {
     /* Start a worker thread here if its not already running */
 
     event_mtx.lock();
-    em.addEvent(data);
+    EventManager::event_added result = em.addEvent(data);
     event_mtx.unlock();
 
-    if (!thread_running) {
+    if (result == EventManager::EVENT_OK && !thread_running) {
         // Start thread!
         thread_running = true;
 
@@ -43,6 +43,16 @@ void Organizer::addEvent(const string& data) {
 
         queueThread = new boost::thread(boost::bind(&Organizer::processEventQueue, this));
     }
+
+    return result;
+}
+
+int Organizer::getEventsCount() {
+  return em.count();
+}
+
+void Organizer::waitForEventsToProcess() {
+    queueThread->join();
 }
 
 void Organizer::processEventQueue() {
@@ -61,10 +71,12 @@ void Organizer::processEventQueue() {
         em.clearEvents();
         event_mtx.unlock();
 
-        httpClient client = httpClient(settings.hostname, ("/api/missions/" + settings.id + "/events"), json_out);
+        if (settings.hostname.length() > 0 && settings.id.length() > 0) {
+            httpClient client = httpClient(settings.hostname, ("/api/missions/" + settings.id + "/events"), json_out);
 
-        if (client.status != httpClient::OK) {
-            failCounter++;
+            if (client.status != httpClient::OK) {
+                failCounter++;
+            }
         }
 
         /* Sleep thread to let events queue up */

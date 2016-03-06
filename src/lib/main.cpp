@@ -45,6 +45,12 @@ Organizer organizer;
             strncpy(output, "-1", outputSize);
         }
     } else if (function_ == "event") {
-        organizer.addEvent(data);
+        EventManager::event_added result = organizer.addEvent(data);
+
+        if (result == EventManager::EVENT_OK) {
+            strncpy(output, "OK", outputSize);
+        } else {
+            strncpy(output, "ERROR", outputSize);
+        }
     }
 }
