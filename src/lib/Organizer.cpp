@@ -1,7 +1,6 @@
 #include "Organizer.hpp"
 #include "httpClient.hpp"
 #include "json.hpp"
-#include <boost/lexical_cast.hpp>
 
 using json = nlohmann::json;
 using namespace std;
@@ -52,7 +51,7 @@ void Organizer::processEventQueue() {
     int failCounter = 0;
 
     do {
-        cout << "sending " << boost::lexical_cast<string>(em.count()) << " events" << endl;
+        cout << "sending " << std::to_string(em.count()) << " events" << endl;
         if (failCounter > 30) {
             break;  // Stop attempting to send. Retry at a later point in time when there is new data to send. Keep old data buffered
         }
@@ -62,7 +61,7 @@ void Organizer::processEventQueue() {
         em.clearEvents();
         event_mtx.unlock();
 
-        httpClient client = httpClient(settings.hostname, ("/api/missions/" + boost::lexical_cast<string>(settings.id) + "/events"), json_out);
+        httpClient client = httpClient(settings.hostname, ("/api/missions/" + settings.id + "/events"), json_out);
 
         if (client.status != httpClient::OK) {
             failCounter++;
