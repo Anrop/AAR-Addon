@@ -18,7 +18,9 @@ public:
   void setHostname(const std::string& hostname);
   std::string getMissionId();
   void setMissionId(const std::string& id);
-  void addEvent(const std::string& data);
+  EventManager::event_added addEvent(const std::string& data);
+  int getEventsCount();
+  void waitForEventsToProcess();
 
   enum status_response {OK, UNAUTHORIZED, CONNECTION_FAILED, PARSE_ERROR, UNKNOWN};
 

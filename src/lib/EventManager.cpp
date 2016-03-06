@@ -4,13 +4,18 @@
 using json = nlohmann::json;
 using namespace std;
 
-void EventManager::addEvent(const string& data) {
-    json event = json::parse(data);
+EventManager::event_added EventManager::addEvent(const string& data) {
+    try {
+        json event = json::parse(data);
 
-    boost::posix_time::ptime now = boost::posix_time::microsec_clock::local_time();
-    event["timestamp"] = boost::posix_time::to_simple_string(now);
+        boost::posix_time::ptime now = boost::posix_time::microsec_clock::local_time();
+        event["timestamp"] = boost::posix_time::to_simple_string(now);
 
-    events.push_back(event);
+        events.push_back(event);
+        return EVENT_OK;
+      } catch (...) {
+          return EVENT_PARSE_ERROR;
+      }
 }
 
 bool EventManager::isEmpty() {
