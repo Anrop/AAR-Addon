@@ -14,7 +14,7 @@ using namespace std;
 
 Organizer organizer;
 
-#if BOOST_OS_WINDOWS
+#if TARGET_WINDOWS
     extern "C" void __stdcall _RVExtension(char *output, int outputSize, const char *function)
 #else
     extern "C" void RVExtension(char *output, int outputSize, const char *function)
