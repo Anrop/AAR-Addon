@@ -46,7 +46,7 @@ EventManager::event_added Organizer::addEvent(const string& data) {
             delete queueThread;
         }
 
-        queueThread = new boost::thread(boost::bind(&Organizer::processEventQueue, this));
+        queueThread = new std::thread(&Organizer::processEventQueue, this);
     }
 
     return result;
@@ -85,7 +85,7 @@ void Organizer::processEventQueue() {
         }
 
         /* Sleep thread to let events queue up */
-        boost::this_thread::sleep(boost::posix_time::milliseconds(THREAD_SLEEP_DELAY));
+        std::this_thread::sleep_for(std::chrono::milliseconds(THREAD_SLEEP_DELAY));
 
     } while (!em.isEmpty());
 

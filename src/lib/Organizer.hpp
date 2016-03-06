@@ -1,6 +1,8 @@
 #pragma once
 
-#include <boost/thread.hpp>
+#include <mutex>
+#include <thread>
+
 #include "EventManager.hpp"
 
 #define THREAD_SLEEP_DELAY 500
@@ -37,8 +39,8 @@ private:
   config_t settings;
   bool thread_running;
   EventManager em;
-  boost::mutex event_mtx;
-  boost::thread *queueThread;
+  std::mutex event_mtx;
+  std::thread *queueThread;
 
   void processEventQueue();
 };
