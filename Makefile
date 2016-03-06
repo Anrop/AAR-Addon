@@ -1,5 +1,6 @@
 windows:
 	$(MINGW_COMPILER) -shared -o bin/armastat.dll $(wildcard src/lib/*.cpp) \
+		-DTARGET_WINDOWS=1 \
 		-fPIC \
 		-w \
 		-Os \
@@ -18,6 +19,7 @@ windows:
 
 linux:
 	g++ -shared -o bin/libarmastat.so $(wildcard src/lib/*.cpp) \
+		-DTARGET_LINUX=1 \
 		-fPIC \
 		-w \
 		-Os \

@@ -1,5 +1,6 @@
-#if BOOST_OS_WINDOWS
+#if TARGET_WINDOWS
     #define WIN32_LEAN_AND_MEAN
+    #include <stdio.h>
     #include <windows.h>
 
     extern "C" int WINAPI DllMain(HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved)
