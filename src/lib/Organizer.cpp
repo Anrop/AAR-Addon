@@ -1,5 +1,10 @@
 #include "Organizer.hpp"
+#include "httpClient.hpp"
 #include "json.hpp"
+#include <boost/lexical_cast.hpp>
+
+using json = nlohmann::json;
+using namespace std;
 
 Organizer::Organizer() {
     thread_running = false;

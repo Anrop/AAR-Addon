@@ -1,15 +1,14 @@
-#include "json.hpp"
+#pragma once
 
-using namespace std;
-using json = nlohmann::json;
+#include "json.hpp"
 
 class EventManager {
 public:
-    void addEvent(const string& data);
-    string getJson();
+    void addEvent(const std::string& data);
+    std::string getJson();
     void clearEvents();
     bool isEmpty();
     int count();
 private:
-    json events; 
+    nlohmann::json events;
 };

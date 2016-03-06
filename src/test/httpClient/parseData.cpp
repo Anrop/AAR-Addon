@@ -7,7 +7,7 @@ SCENARIO( "httpClient can parse response", "[httpClient]" ) {
         httpClient client;
 
         WHEN( "a response with newlines is parsed" ) {
-            string data = string("{") +
+            std::string data = std::string("{") +
                 "\"id\":1," +
                 "\"name\":\"test\"," +
                 "\"world\":null," +
@@ -15,7 +15,7 @@ SCENARIO( "httpClient can parse response", "[httpClient]" ) {
                 "\"updated_at\":\"2016-03-06T12:36:59.880Z\"" +
             "}";
 
-            string response = string("HTTP/1.1 201 Created\n") +
+            std::string response = std::string("HTTP/1.1 201 Created\n") +
                 "X-Frame-Options: SAMEORIGIN\n" +
                 "X-XSS-Protection: 1; mode=block\n" +
                 "X-Content-Type-Options: nosniff\n" +
@@ -38,7 +38,7 @@ SCENARIO( "httpClient can parse response", "[httpClient]" ) {
         }
 
         WHEN( "a response with carriage returns and newlines is parsed" ) {
-            string data = string("{") +
+            std::string data = std::string("{") +
                 "\"id\":1," +
                 "\"name\":\"test\"," +
                 "\"world\":null," +
@@ -46,7 +46,7 @@ SCENARIO( "httpClient can parse response", "[httpClient]" ) {
                 "\"updated_at\":\"2016-03-06T12:36:59.880Z\"" +
             "}";
 
-            string response = string("HTTP/1.1 201 Created\r\n") +
+            std::string response = std::string("HTTP/1.1 201 Created\r\n") +
                 "X-Frame-Options: SAMEORIGIN\r\n" +
                 "X-XSS-Protection: 1; mode=block\r\n" +
                 "X-Content-Type-Options: nosniff\r\n" +
@@ -69,7 +69,7 @@ SCENARIO( "httpClient can parse response", "[httpClient]" ) {
         }
 
         WHEN( "a chunked response with newlines is parsed" ) {
-            string data = string("{") +
+            std::string data = std::string("{") +
                 "\"id\":1," +
                 "\"name\":\"test\"," +
                 "\"world\":null," +
@@ -77,7 +77,7 @@ SCENARIO( "httpClient can parse response", "[httpClient]" ) {
                 "\"updated_at\":\"2016-03-06T12:36:59.880Z\"" +
             "}";
 
-            string response = string("HTTP/1.1 201 Created\n") +
+            std::string response = std::string("HTTP/1.1 201 Created\n") +
                 "X-Frame-Options: SAMEORIGIN\n" +
                 "X-XSS-Protection: 1; mode=block\n" +
                 "X-Content-Type-Options: nosniff\n" +
@@ -103,7 +103,7 @@ SCENARIO( "httpClient can parse response", "[httpClient]" ) {
         }
 
         WHEN( "a chunked response with carriage returns and newlines is parsed" ) {
-            string data = string("{") +
+            std::string data = std::string("{") +
                 "\"id\":1," +
                 "\"name\":\"test\"," +
                 "\"world\":null," +
@@ -111,7 +111,7 @@ SCENARIO( "httpClient can parse response", "[httpClient]" ) {
                 "\"updated_at\":\"2016-03-06T12:36:59.880Z\"" +
             "}";
 
-            string response = string("HTTP/1.1 201 Created\r\n") +
+            std::string response = std::string("HTTP/1.1 201 Created\r\n") +
                 "X-Frame-Options: SAMEORIGIN\r\n" +
                 "X-XSS-Protection: 1; mode=block\r\n" +
                 "X-Content-Type-Options: nosniff\r\n" +

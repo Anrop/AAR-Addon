@@ -7,7 +7,7 @@ SCENARIO( "Organizer can parse mission response", "[Organizer]" ) {
         Organizer organizer;
 
         WHEN( "a response with mission id as string" ) {
-            string response = string("{") +
+            std::string response = std::string("{") +
                 "\"id\":\"1\"," +
                 "\"name\":\"name\"," +
                 "\"world\":\"world\"," +
@@ -27,7 +27,7 @@ SCENARIO( "Organizer can parse mission response", "[Organizer]" ) {
         }
 
         WHEN( "a response with mission id as int" ) {
-            string response = string("{") +
+            std::string response = std::string("{") +
                 "\"id\":1," +
                 "\"name\":\"name\"," +
                 "\"world\":\"world\"," +
@@ -47,7 +47,7 @@ SCENARIO( "Organizer can parse mission response", "[Organizer]" ) {
         }
 
         WHEN( "an invalid response" ) {
-            string response = string("{\"id\":1");
+            std::string response = std::string("{\"id\":1");
 
             Organizer::status_response status = organizer.parseCreateMission(response);
 

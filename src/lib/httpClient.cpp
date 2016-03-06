@@ -1,8 +1,10 @@
 #include "httpClient.hpp"
 #include <boost/algorithm/string.hpp>
 #include <boost/asio.hpp>
+#include <boost/lexical_cast.hpp>
 
 using boost::asio::ip::tcp;
+using namespace std;
 
 httpClient::httpClient() {
 }
@@ -94,12 +96,8 @@ void httpClient::httpPost(const string& host, const string& data) {
 
         httpClient::parseData(buffer);
     }
-    //catch (std::exception& e)
     catch(boost::system::system_error& e)
     {
-        //cout << "exception caught" << endl;
-        cerr << e.what() << endl;
-        //cout<<"Info: "  << boost::diagnostic_information(e) <<endl;
         status = httpClient::CONNECTION_FAILED;
     }
 }

@@ -1,11 +1,9 @@
+#pragma once
+
 #include <boost/thread.hpp>
-#include "EventManager.cpp"
-#include "httpClient.cpp"
+#include "EventManager.hpp"
 
 #define THREAD_SLEEP_DELAY 500
-
-using namespace std;
-
 
 /*
   Organizers purpose is to get external data and put it in a buffer (EventManager),
@@ -17,20 +15,20 @@ class Organizer {
 public:
   Organizer();
   ~Organizer();
-  void setHostname(const string& hostname);
-  string getMissionId();
-  void setMissionId(const string& id);
-  void addEvent(const string& data);
+  void setHostname(const std::string& hostname);
+  std::string getMissionId();
+  void setMissionId(const std::string& id);
+  void addEvent(const std::string& data);
 
   enum status_response {OK, UNAUTHORIZED, CONNECTION_FAILED, PARSE_ERROR, UNKNOWN};
 
   struct config_t {
-      string hostname;
-      string id;
+      std::string hostname;
+      std::string id;
   };
 
-  status_response createMission(const string& mission, const string& world);
-  status_response parseCreateMission(const string& data);
+  status_response createMission(const std::string& mission, const std::string& world);
+  status_response parseCreateMission(const std::string& data);
 private:
   config_t settings;
   bool thread_running;
