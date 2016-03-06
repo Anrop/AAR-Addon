@@ -1,9 +1,4 @@
-#if BOOST_OS_WINDOWS
-    #define WIN32_LEAN_AND_MEAN
-    #include <windows.h>
-#endif
-
-#include "Organizer.cpp"
+#include "Organizer.hpp"
 
 /*
     Windows
@@ -18,25 +13,6 @@
 using namespace std;
 
 Organizer organizer;
-
-#if BOOST_OS_WINDOWS
-    extern "C" int APIENTRY DllMain( HINSTANCE hinstDLL, DWORD ul_reason_for_call, LPVOID lpvReserved )
-    {
-
-        switch (ul_reason_for_call)
-        {
-        case DLL_PROCESS_ATTACH:
-            AllocConsole();
-            freopen("CONOUT$", "w", stdout);
-            break;
-        case DLL_THREAD_ATTACH:
-        case DLL_THREAD_DETACH:
-        case DLL_PROCESS_DETACH:
-            break;
-        }
-        return TRUE;
-    }
-#endif
 
 #if BOOST_OS_WINDOWS
     extern "C" void __stdcall _RVExtension(char *output, int outputSize, const char *function)

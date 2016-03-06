@@ -7,14 +7,14 @@ SCENARIO( "httpClient can make post", "[httpClient]" ) {
         httpClient client;
 
         WHEN( "a post is generated" ) {
-            string host = "test.com";
-            string path = "/path";
-            string data = "{\"test\": \"test\"";
-            string contentLength = std::to_string(data.length());
-            string request = client.generateHttpPost(host, path, data);
+            std::string host = "test.com";
+            std::string path = "/path";
+            std::string data = "{\"test\": \"test\"";
+            std::string contentLength = std::to_string(data.length());
+            std::string request = client.generateHttpPost(host, path, data);
 
             THEN( "it is a valid request" ) {
-                string expected = "POST " + path + " HTTP/1.1\r\n" +
+                std::string expected = "POST " + path + " HTTP/1.1\r\n" +
                         "Host: " + host + "\r\n" +
                         "Connection: close\r\n" +
                         "Content-Type: application/json\r\n" +

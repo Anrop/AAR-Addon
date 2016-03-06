@@ -1,5 +1,8 @@
 #include "../catch.hpp"
 #include <EventManager.hpp>
+#include <json.hpp>
+
+using json = nlohmann::json;
 
 SCENARIO( "EventManager can generate Json", "[EventManager]" ) {
 

@@ -1,6 +1,9 @@
 #include "EventManager.hpp"
 #include <boost/date_time.hpp>
 
+using json = nlohmann::json;
+using namespace std;
+
 void EventManager::addEvent(const string& data) {
     json event = json::parse(data);
 
