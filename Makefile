@@ -33,8 +33,16 @@ linux:
 test:
 	g++ \
 		-o bin/test src/test/main.cpp $(wildcard src/test/**/*.cpp) \
+		-w \
+		-Os \
 		-std=c++11 \
 		-Isrc/lib \
 		-Lbin \
+		-I$(BOOST_DIR) \
+		-L$(BOOST_DIR)/stage_linux/lib/ \
 		-larmastat \
+		-lboost_system \
+		-lboost_thread \
+		-lboost_date_time \
+		-lpthread \
 		-m32

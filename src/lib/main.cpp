@@ -3,8 +3,6 @@
     #include <windows.h>
 #endif
 
-#include "EventManager.cpp"
-#include "httpClient.cpp"
 #include "Organizer.cpp"
 
 /*
@@ -19,7 +17,7 @@
 
 using namespace std;
 
-Organizer *organizer = NULL;
+Organizer organizer;
 
 #if BOOST_OS_WINDOWS
     extern "C" int APIENTRY DllMain( HINSTANCE hinstDLL, DWORD ul_reason_for_call, LPVOID lpvReserved )
@@ -46,34 +44,31 @@ Organizer *organizer = NULL;
     extern "C" void RVExtension(char *output, int outputSize, const char *function)
 #endif
 {
-    if(!organizer)
-        organizer = new Organizer();
-
     /* Format of function should be function name;data*/
     string s_function(function);
     string function_ = s_function.substr(0, s_function.find(';'));
     string data = s_function.substr(s_function.find(';')+1, s_function.length());
 
     if (function_ == "setup") {
-            organizer->setHostname(data);
+            organizer.setHostname(data);
     }
     else if (function_ == "status") {
         /* TODO: Get IP of current machine */
-        Organizer::status_t status = organizer->getStatus(data, "NOT_IMPLEMENTED");
-        if (status.status == Organizer::OK) {
-            organizer->setId(status.id);
-            cout << "Oranizer reports connection OK! ID: " << status.id << endl;
-            snprintf(output, outputSize, "%s", status.id.c_str());
+        Organizer::status_response status = organizer.createMission(data, "NOT_IMPLEMENTED");
+        if (status == Organizer::OK) {
+            cout << "Organizer reports connection OK! ID: " << organizer.getMissionId() << endl;
+            snprintf(output, outputSize, "%s", organizer.getMissionId().c_str());
         } else {
-            if (status.status == Organizer::CONNECTION_FAILED) {
+            if (status == Organizer::CONNECTION_FAILED) {
                 cout << "Organizer reports connection failed. Check config" << endl;
+            } else if (status == Organizer::PARSE_ERROR) {
+                cout << "Organiser reports parse error when creating mission" << endl;
             } else {
-                cout << "Organizer reports unknonwn error." << endl;
+                cout << "Organizer reports unknown error." << endl;
             }
             strncpy(output, "-1", outputSize);
         }
     } else if (function_ == "event") {
-        organizer->addEvent(data);
+        organizer.addEvent(data);
     }
 }
-

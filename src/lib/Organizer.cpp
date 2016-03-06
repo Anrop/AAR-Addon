@@ -14,7 +14,11 @@ void Organizer::setHostname(const string& hostname) {
     settings.hostname = hostname;
 }
 
-void Organizer::setId(const string& id) {
+string Organizer::getMissionId() {
+    return settings.id;
+}
+
+void Organizer::setMissionId(const string& id) {
     settings.id = id;
 }
 
@@ -53,11 +57,7 @@ void Organizer::processEventQueue() {
         em.clearEvents();
         event_mtx.unlock();
 
-        #ifdef debug
-            httpClient client = httpClient(settings.hostname, "/post.php", json_out);
-        #else
-            httpClient client = httpClient(settings.hostname, ("/api/missions/" + boost::lexical_cast<string>(settings.id) + "/events"), json_out);
-        #endif
+        httpClient client = httpClient(settings.hostname, ("/api/missions/" + boost::lexical_cast<string>(settings.id) + "/events"), json_out);
 
         if (client.status != httpClient::OK) {
             failCounter++;
@@ -71,25 +71,39 @@ void Organizer::processEventQueue() {
     thread_running = false;
 }
 
-Organizer::status_t Organizer::getStatus(const string& mission, const string& world) {
-    status_t result;
+Organizer::status_response Organizer::parseCreateMission(const string& data) {
+    try {
+        json jsonData = json::parse(data);
+        json missionIdJson = jsonData["id"];
 
+        if (missionIdJson.is_string()) {
+            setMissionId(missionIdJson.get<std::string>());
+            return OK;
+        }
+
+        if (missionIdJson.is_number()) {
+            int missionId = missionIdJson.get<int>();
+            setMissionId(std::to_string(missionId));
+            return OK;
+        }
+
+        return UNKNOWN;
+    } catch (...) {
+        return PARSE_ERROR;
+    }
+}
+
+Organizer::status_response Organizer::createMission(const string& mission, const string& world) {
     json missionJson;
     missionJson["name"] = mission;
     missionJson["world"] = world;
 
-    httpClient client = httpClient(settings.hostname, "/api/missions", missionJson.dump());
+    httpClient client = httpClient(settings.hostname, "/missions", missionJson.dump());
     if (client.status == httpClient::OK) {
-        /* Read json response */
-        json missionResponseJson = json::parse(client.getResult());
-
-        result.id = missionResponseJson["_id"];
-        result.status = Organizer::OK;
+        return parseCreateMission(client.getResult());
     } else if (client.status == httpClient::CONNECTION_FAILED) {
-        result.status = Organizer::CONNECTION_FAILED;
-    } else {
-        result.status = Organizer::UNKNOWN;
+        return CONNECTION_FAILED;
     }
 
-    return result;
+    return UNKNOWN;
 }

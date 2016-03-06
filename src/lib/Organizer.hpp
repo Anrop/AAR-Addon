@@ -1,4 +1,6 @@
 #include <boost/thread.hpp>
+#include "EventManager.cpp"
+#include "httpClient.cpp"
 
 #define THREAD_SLEEP_DELAY 500
 
@@ -16,21 +18,19 @@ public:
   Organizer();
   ~Organizer();
   void setHostname(const string& hostname);
-  void setId(const string& id);
+  string getMissionId();
+  void setMissionId(const string& id);
   void addEvent(const string& data);
 
-  enum status_response {OK, UNAUTHORIZED, CONNECTION_FAILED, UNKNOWN};
-  struct status_t {
-    string id;
-    status_response status;
-  };
+  enum status_response {OK, UNAUTHORIZED, CONNECTION_FAILED, PARSE_ERROR, UNKNOWN};
 
   struct config_t {
       string hostname;
       string id;
   };
 
-  Organizer::status_t getStatus(const string& mission, const string& ip);
+  status_response createMission(const string& mission, const string& world);
+  status_response parseCreateMission(const string& data);
 private:
   config_t settings;
   bool thread_running;
