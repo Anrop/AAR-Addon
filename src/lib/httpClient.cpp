@@ -1,7 +1,11 @@
 #include "httpClient.hpp"
+#include <boost/algorithm/string.hpp>
 #include <boost/asio.hpp>
 
 using boost::asio::ip::tcp;
+
+httpClient::httpClient() {
+}
 
 httpClient::httpClient(const string& url, const string& data) {
     string url_to_parse = url;
@@ -27,29 +31,31 @@ string httpClient::generateHttpPost(const string& host, const string& url, const
         "Host: " + host + "\r\n" +
         "Connection: close\r\n" +
         "Content-Type: application/json\r\n" +
-        "Content-Length: " + boost::lexical_cast<string>(content_length) + "\r\n" +
+        "Content-Length: " + std::to_string(content_length) + "\r\n" +
         "\r\n" + data;
 
     return response;
 }
 
 void httpClient::parseData(const string& data) {
-	if (!data.empty()) {
+    if (!data.empty()) {
+        string dataWithoutCarriageReturn = boost::replace_all_copy(data, "\r", "");
+        httpClient::status = (status_t)boost::lexical_cast<int>(dataWithoutCarriageReturn.substr(9, 3));
+        bool chunked = (dataWithoutCarriageReturn.find("Transfer-Encoding: chunked\n") < string::npos) ? true : false;
 
-		httpClient::status = (status_t)boost::lexical_cast<int>(data.substr(9, 3));
-        bool chunked = (data.find("Transfer-Encoding: chunked\r\n") < string::npos) ? true : false;
-
-		size_t headerEnd = (data.find("\r\n\r\n") + 4);
-		string dataWithoutHeader = data.substr(headerEnd, data.length());
+        size_t headerEnd = (dataWithoutCarriageReturn.find("\n\n") + 2);
+        string dataWithoutHeader = dataWithoutCarriageReturn.substr(headerEnd, data.length());
 
         if (chunked) {
-            string dataWithoutChunk = dataWithoutHeader.substr(dataWithoutHeader.find("\r\n")+2, dataWithoutHeader.length());
-            dataWithoutChunk = dataWithoutChunk.substr(0, dataWithoutChunk.length() - 6);
+            string dataWithoutChunk = dataWithoutHeader.substr(dataWithoutHeader.find("\n")+1, dataWithoutHeader.length());
+            dataWithoutChunk = dataWithoutChunk.substr(0, dataWithoutChunk.length() - 3);
             dataWithoutHeader = dataWithoutChunk;
         }
 
+        boost::trim_right_if(dataWithoutHeader, boost::is_any_of("\n"));
+
         httpClient::output = dataWithoutHeader;
-	}
+    }
 }
 
 void httpClient::httpPost(const string& host, const string& data) {
@@ -66,8 +72,8 @@ void httpClient::httpPost(const string& host, const string& data) {
         boost::system::error_code ignored_error;
         boost::asio::write(socket, boost::asio::buffer( data ), ignored_error);
 
-		httpClient::output.clear();
-		string buffer;
+    		httpClient::output.clear();
+    		string buffer;
 
         for (;;)
         {
