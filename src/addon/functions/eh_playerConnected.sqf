@@ -1,10 +1,15 @@
 if (not(_this select 0 == "")) then {
-	//"testPlugin" callExtension format["event;type=player_connected;id=%1;name=%2", _this select 0, _this select 1];
-	_arr = [
-		["type", "player_connected"],
-		["uid", _this select 0],
-		["name", _this select 1]
-	];
+	private "_name";
+	_name = _this select 1;
+	private "_uid";
+	_uid = _this select 0;
+	private "_player";
+	_player = [_name, _uid] call xea_fnc_serializePlayer;
 
+	private "_arr";
+	_arr = ["object",
+		["type", ["string", "PlayerConnected"]],
+		["player", _player]
+	];
 	_arr call xea_fnc_sendEvent;
 };

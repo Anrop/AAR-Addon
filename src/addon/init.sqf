@@ -5,8 +5,8 @@ _hostname = getString(configFile >> "XEA_STATTRACK_Settings" >> "hostname");
 _password = getString(configFile >> "XEA_STATTRACK_Settings" >> "password");
 */
 _hostname = "arma-stats.herokuapp.com";
-_positionReportDelay = 1;	// Minutes
-_positionReporting = false;	// Disabled until delta reporting is implemented to prevent spam
+_positionReportDelay = 10;	// Seconds
+_positionReporting = true;	// Disabled until delta reporting is implemented to prevent spam
 xea_extension = "armastat";	// dll
 
 if (isMultiplayer) then {
@@ -42,36 +42,6 @@ if (isMultiplayer) then {
 		}] call BIS_fnc_addStackedEventHandler;
 
 		addMissionEventHandler ["Ended", { (_this) call xea_fnc_missionEnded }];
-	} else {
-		/* Not server. attempt to inject functions to the server to broadcast CBA events (assumes server has cba) */
-		["xea_armastat_playerConnected", {
-			_this call xea_fnc_playerConnected;
-		}] call CBA_fnc_addEventHandler;
-
-		["xea_armastat_playerDisconnected", {
-			_this call xea_fnc_playerDisconnected;
-		}] call CBA_fnc_addEventHandler;
-
-		["xea_armastat_missionEnded", {
-			_this call xea_fnc_missionEnded;
-		}] call CBA_fnc_addEventHandler;
-
-		xea_fnc_armastat_injectedHandler = {
-			if (isNil "xea_armastat_hasInjectedHandler") then {
-				xea_armastat_hasInjectedHandler = true;
-
-				["xea_armastat_connected", "onPlayerConnected", {
-					["xea_armastat_playerConnected", [_uid, _name]] call CBA_fnc_globalEvent; 
-				}] call BIS_fnc_addStackedEventHandler;
-				["xea_armastat_disconnected", "onPlayerDisconnected", {
-					["xea_armastat_playerDisconnected", [_uid, _name]] call CBA_fnc_globalEvent; 
-				}] call BIS_fnc_addStackedEventHandler;
-
-				addMissionEventHandler ["Ended", { ["xea_armastat_missionEnded" ,_this] call CBA_fnc_globalEvent; }];
-			};
-		};
-
-		[xea_fnc_armastat_injectedHandler,"BIS_fnc_spawn",false,false] call BIS_fnc_MP;
 	};
 
 	/*
@@ -81,7 +51,7 @@ if (isMultiplayer) then {
 
 	/* Attach various eventhandlers on players */
 	{
-		_x call xea_fnc_addEventHandlers;
+		//_x call xea_fnc_addEventHandlers;
 	} forEach allUnits;
 
 	/* Add event handlers to units created during the mission */
@@ -89,7 +59,7 @@ if (isMultiplayer) then {
 		while { true } do {
 			{
 				if (!(_x getVariable ["xea_stattrack", false])) then {
-					_x call xea_fnc_addEventHandlers;
+					//_x call xea_fnc_addEventHandlers;
 				};
 			} foreach allUnits;
 			sleep 5;
@@ -99,7 +69,7 @@ if (isMultiplayer) then {
 	/* Periodically send unit positions */
 	if (_positionReporting) then {
 		(_positionReportDelay) spawn {
-			(_this*60) call xea_fnc_reportUnitPositions;
+			(_this) call xea_fnc_reportUnitPositions;
 		};
 	};
 };
