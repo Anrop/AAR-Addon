@@ -22,7 +22,19 @@ while { true } do {
 			["unit", _unit]
 		];
 
-		_arr call xea_fnc_sendEvent;
+		private "_cached";
+		_cached = _x getVariable _unitCacheKey;
+
+		if (isNil "_cached") then {
+			_cached = "";
+		};
+
+		private "_serialized";
+		_serialized = _arr call xea_fnc_serializeJson;
+		if (_serialized != _cached) then {
+			_x setVariable [_unitCacheKey, _serialized];
+			_serialized call xea_fnc_sendJson;
+		};
 	} forEach allUnits;
 	sleep _this;
 };
