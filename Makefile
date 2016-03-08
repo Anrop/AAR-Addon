@@ -24,6 +24,8 @@ linux:
 		-w \
 		-Os \
 		-std=c++11 \
+		-static-libgcc \
+		-static-libstdc++ \
 		-I$(BOOST_DIR) \
 		-L$(BOOST_DIR)/stage_linux/lib/ \
 		-lboost_system \
