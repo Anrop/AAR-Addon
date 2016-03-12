@@ -2,6 +2,7 @@
 xea_fnc_sendEvent = compile preprocessFile "\xea_armastat\functions\fnc_sendEvent.sqf";
 xea_fnc_sendJson = compile preprocessFile "\xea_armastat\functions\fnc_sendJson.sqf";
 xea_fnc_serializeJson = compile preprocessFile "\xea_armastat\functions\fnc_serializeJson.sqf";
+xea_fnc_serializeMission = compile preprocessFile "\xea_armastat\functions\fnc_serializeMission.sqf";
 xea_fnc_serializePlayer = compile preprocessFile "\xea_armastat\functions\fnc_serializePlayer.sqf";
 xea_fnc_serializePosition = compile preprocessFile "\xea_armastat\functions\fnc_serializePosition.sqf";
 xea_fnc_serializeUnit = compile preprocessFile "\xea_armastat\functions\fnc_serializeUnit.sqf";

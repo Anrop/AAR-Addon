@@ -24,7 +24,9 @@ if (isMultiplayer) then {
 
 	/* Initialize plugin. Get unique ID from server */
 	xea_extension callExtension format["setup;%1", _hostname];
-	xea_stattrack_id = xea_extension callExtension format["status;%1", missionName];
+	_mission = call xea_fnc_serializeMission;
+	_missionData = _mission call xea_fnc_serializeJson;
+	xea_stattrack_id = xea_extension callExtension format["mission;%1", _missionData];
 
 	/*
 		--------------------------------------------------------------------------------------------------------------

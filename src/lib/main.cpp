@@ -27,10 +27,9 @@ Organizer organizer;
 
     if (function_ == "setup") {
             organizer.setHostname(data);
-    }
-    else if (function_ == "status") {
+    } else if (function_ == "mission") {
         /* TODO: Get IP of current machine */
-        Organizer::status_response status = organizer.createMission(data, "NOT_IMPLEMENTED");
+        Organizer::status_response status = organizer.createMission(data);
         if (status == Organizer::OK) {
             cout << "Organizer reports connection OK! ID: " << organizer.getMissionId() << endl;
             snprintf(output, outputSize, "%s", organizer.getMissionId().c_str());

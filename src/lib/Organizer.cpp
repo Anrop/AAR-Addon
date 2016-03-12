@@ -109,17 +109,20 @@ Organizer::status_response Organizer::parseCreateMission(const string& data) {
     }
 }
 
-Organizer::status_response Organizer::createMission(const string& mission, const string& world) {
-    json missionJson;
-    missionJson["name"] = mission;
-    missionJson["world"] = world;
+Organizer::status_response Organizer::createMission(const string& data) {
+    try {
+        // Make sure data is actual JSON
+        json jsonData = json::parse(data);
 
-    httpClient client = httpClient(settings.hostname, "/missions", missionJson.dump());
-    if (client.status == httpClient::OK) {
-        return parseCreateMission(client.getResult());
-    } else if (client.status == httpClient::CONNECTION_FAILED) {
-        return CONNECTION_FAILED;
+        httpClient client = httpClient(settings.hostname, "/missions", jsonData.dump());
+        if (client.status == httpClient::OK) {
+            return parseCreateMission(client.getResult());
+        } else if (client.status == httpClient::CONNECTION_FAILED) {
+            return CONNECTION_FAILED;
+        }
+
+        return UNKNOWN;
+    } catch (...) {
+        return PARSE_ERROR;
     }
-
-    return UNKNOWN;
 }

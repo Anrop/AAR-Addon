@@ -29,7 +29,7 @@ public:
       std::string id;
   };
 
-  status_response createMission(const std::string& mission, const std::string& world);
+  status_response createMission(const std::string& data);
   status_response parseCreateMission(const std::string& data);
 private:
   config_t settings;
