@@ -1,12 +1,12 @@
-// https://community.bistudio.com/wiki/BIS_fnc_MP
-
-/*
-_hostname = getString(configFile >> "XEA_STATTRACK_Settings" >> "hostname");
-_password = getString(configFile >> "XEA_STATTRACK_Settings" >> "password");
-*/
-_hostname = "arma-stats.herokuapp.com";
-_positionReportDelay = 10;	// Seconds
-_positionReporting = true;	// Disabled until delta reporting is implemented to prevent spam
+// Setup config
+xea_stats_hostname = "arma-stats-api.herokuapp.com";
+xea_stats_position_reporting = 10;
+if (isFilePatchingEnabled) then {
+	xea_stats_settings_file = compile preprocessFileLineNumbers "\userconfig\stats\config.sqf";
+	if (!isNil "xea_stats_settings_file") then {
+		[] call xea_stats_settings_file;
+	};
+};
 xea_extension = "armastat";	// dll
 
 if (isMultiplayer) then {
@@ -23,7 +23,7 @@ if (isMultiplayer) then {
 	*/
 
 	/* Initialize plugin. Get unique ID from server */
-	xea_extension callExtension format["setup;%1", _hostname];
+	xea_extension callExtension format["setup;%1", xea_stats_hostname];
 	_mission = call xea_fnc_serializeMission;
 	_missionData = _mission call xea_fnc_serializeJson;
 	xea_stattrack_id = xea_extension callExtension format["mission;%1", _missionData];
@@ -69,8 +69,8 @@ if (isMultiplayer) then {
 	};
 
 	/* Periodically send unit positions */
-	if (_positionReporting) then {
-		(_positionReportDelay) spawn {
+	if (xea_stats_position_reporting > 0) then {
+		(xea_stats_position_reporting) spawn {
 			(_this) call xea_fnc_reportUnitPositions;
 		};
 	};

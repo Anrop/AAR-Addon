@@ -1,4 +1,4 @@
-class CfgPatches 
+class CfgPatches
 {
 	class xea_testExtension
 	{
@@ -12,15 +12,10 @@ class CfgPatches
 	};
 };
 
-class Extended_PostInit_EventHandlers 
+class Extended_PostInit_EventHandlers
 {
     class xea_armastat
 	{
         Init = "call compile preprocessFileLineNumbers '\xea_armastat\init.sqf'";
 	};
 };
-
-//class TPW_CIVS_Key_Setting 
-//	{
-//	#include "\userconfig\TPW_CIVS\TPW_CIVS.hpp"
-//	};
