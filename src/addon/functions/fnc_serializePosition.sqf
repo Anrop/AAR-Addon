@@ -1,5 +1,7 @@
 params ["_unit"];
 
+private "_dir";
+_dir = direction _unit;
 private "_position";
 _position = getPosASL _unit;
 private "_x";
@@ -10,7 +12,8 @@ private "_z";
 _z = _position select 2;
 
 ["object",
-    ["x", ["number", _x]], 
+    ["dir", ["number", _dir]],
+    ["x", ["number", _x]],
     ["y", ["number", _y]],
     ["z", ["number", _z]]
 ];
