@@ -11,10 +11,19 @@ _position = (_unit call xea_fnc_serializePosition);
 private "_side";
 _side = side _unit;
 
-["object",
+private "_arr";
+_arr = ["object",
 	["id", ["string", _id]],
 	["life_state", ["string", _lifeState]],
 	["name", ["string", _name]],
 	["position", _position],
 	["side", ["string", _side]]
 ];
+
+if (vehicle _unit != _unit) then {
+	private "_vehicleId";
+	_vehicleId = netId vehicle _unit;
+	_arr pushBack ["vehicle_id", ["string", _vehicleId]];
+};
+
+_arr;

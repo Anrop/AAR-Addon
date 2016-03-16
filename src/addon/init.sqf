@@ -73,5 +73,9 @@ if (isMultiplayer) then {
 		(xea_stats_position_reporting) spawn {
 			(_this) call xea_fnc_reportUnitPositions;
 		};
+
+		(xea_stats_position_reporting) spawn {
+			(_this) call xea_fnc_reportVehiclePositions;
+		};
 	};
 };
