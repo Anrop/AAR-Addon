@@ -2,7 +2,7 @@ private "_unitCacheKey";
 _unitCacheKey = "stats_unit_cache";
 
 while { true } do {
-	{
+	_reportUnit = {
 		private "_name";
 		_name = name _x;
 		private "_uid";
@@ -35,6 +35,9 @@ while { true } do {
 			_x setVariable [_unitCacheKey, _serialized];
 			_serialized call xea_fnc_sendJson;
 		};
-	} forEach allUnits;
+	};
+
+	_reportUnit forEach allUnits;
+	_reportUnit forEach allDead;
 	sleep _this;
 };

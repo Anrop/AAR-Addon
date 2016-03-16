@@ -2,6 +2,8 @@ params ["_unit"];
 
 private "_id";
 _id = netId _unit;
+private "_lifeState";
+_lifeState = lifeState _unit;
 private "_name";
 _name = name _unit;
 private "_position";
@@ -11,6 +13,7 @@ _side = side _unit;
 
 ["object",
 	["id", ["string", _id]],
+	["life_state", ["string", _lifeState]],
 	["name", ["string", _name]],
 	["position", _position],
 	["side", ["string", _side]]
