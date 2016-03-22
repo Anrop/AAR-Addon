@@ -7,7 +7,7 @@ _lifeState = lifeState _unit;
 private "_name";
 _name = name _unit;
 private "_position";
-_position = (_unit call xea_fnc_serializePosition);
+_position = ([getPosASL _unit, direction _unit] call xea_fnc_serializePosition);
 private "_side";
 _side = side _unit;
 
