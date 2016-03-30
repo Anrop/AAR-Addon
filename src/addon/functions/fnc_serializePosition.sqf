@@ -1,9 +1,5 @@
-params ["_unit"];
+params ["_position", "_dir"];
 
-private "_dir";
-_dir = direction _unit;
-private "_position";
-_position = getPosASL _unit;
 private "_x";
 _x = _position select 0;
 private "_y";

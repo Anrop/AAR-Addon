@@ -51,19 +51,21 @@ if (isMultiplayer) then {
 					UNIT INIT
 	*/
 
-	/* Attach various eventhandlers on players */
-	{
-		//_x call xea_fnc_addEventHandlers;
-	} forEach allUnits;
-
 	/* Add event handlers to units created during the mission */
 	[] spawn {
 		while { true } do {
 			{
 				if (!(_x getVariable ["xea_stattrack", false])) then {
-					//_x call xea_fnc_addEventHandlers;
+					_x call xea_fnc_addUnitEventHandlers;
 				};
-			} foreach allUnits;
+			} forEach allUnits;
+
+			{
+				if (!(_x getVariable ["xea_stattrack", false])) then {
+					_x call xea_fnc_addVehicleEventHandlers;
+				};
+			} forEach vehicles;
+
 			sleep 5;
 		};
 	};
