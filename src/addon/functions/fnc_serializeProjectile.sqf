@@ -1,4 +1,4 @@
-params ["_id", "_position", "_simulation", "_side"];
+params ["_id", "_position", "_side", "_simulation"];
 
 ["object",
 	["id", ["string", _id]],
