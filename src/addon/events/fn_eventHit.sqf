@@ -13,9 +13,9 @@ direct: Boolean - true if object was directly hit, false if it was hit by indire
 */
 
 /* HIT
-unit: Object - Object the event handler is assigned to 
+unit: Object - Object the event handler is assigned to
 causedBy: Object - Object that caused the damage.
-Contains the unit itself in case of collisions. 
+Contains the unit itself in case of collisions.
 damage: Number - Level of damage caused by the hit
 */
 
@@ -45,4 +45,4 @@ _arr = [
 	["attacker_posZ", (getPosASL (_this select 1)) select 2]
 ];
 
-//_arr call xea_fnc_sendEvent;
+//_arr call anrop_aar_fnc_sendEvent;

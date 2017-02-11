@@ -1,1 +1,0 @@
-g++ -shared -o armastat.dll main.cpp -D_WIN32_WINNT=0x0501 -DWINVER=0x0501 -lboost_system-mgw47-mt-1_55 -lboost_thread-mgw47-mt-1_55 -lboost_date_time-mgw47-mt-1_55 -lwsock32 -lws2_32

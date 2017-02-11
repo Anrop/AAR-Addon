@@ -1,5 +1,5 @@
 windows:
-	$(MINGW_COMPILER) -shared -o bin/armastat.dll $(wildcard src/lib/*.cpp) \
+	$(MINGW_COMPILER) -shared -o bin/anrop_aar.dll $(wildcard src/lib/*.cpp) \
 		-DTARGET_WINDOWS=1 \
 		-fPIC \
 		-w \
@@ -18,7 +18,7 @@ windows:
 		-lws2_32
 
 linux:
-	g++ -shared -o bin/libarmastat.so $(wildcard src/lib/*.cpp) \
+	g++ -shared -o bin/libanrop_aar.so $(wildcard src/lib/*.cpp) \
 		-DTARGET_LINUX=1 \
 		-fPIC \
 		-w \
@@ -44,7 +44,7 @@ test:
 		-Lbin \
 		-I$(BOOST_DIR) \
 		-L$(BOOST_DIR)/stage_linux/lib/ \
-		-larmastat \
+		-lanrop_aar \
 		-lboost_system \
 		-lboost_thread \
 		-lboost_date_time \

@@ -22,9 +22,9 @@ _simulation = getText (configFile >> "cfgAmmo" >> typeOf _projectile >> "simulat
 private "_arr";
 _arr = ["object",
 	["type", ["string", "ProjectileCreated"]],
-	["projectile", [_id, ([_position, _dir] call xea_fnc_serializePosition), _side, _simulation] call xea_fnc_serializeProjectile],
-	["vehicle", _vehicle call xea_fnc_serializeVehicle]
+	["projectile", [_id, ([_position, _dir] call anrop_aar_fnc_serializePosition), _side, _simulation] call anrop_aar_fnc_serializeProjectile],
+	["vehicle", _vehicle call anrop_aar_fnc_serializeVehicle]
 ];
-_arr call xea_fnc_sendEvent;
+_arr call anrop_aar_fnc_sendEvent;
 
-[_projectile, _side] call xea_fnc_trackProjectile;
+[_projectile, _side] call anrop_aar_fnc_trackProjectile;

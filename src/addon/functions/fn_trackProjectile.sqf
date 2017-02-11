@@ -28,9 +28,9 @@ waitUntil {
 
 				_arr = ["object",
 					["type", ["string", "ProjectilePosition"]],
-					["projectile", [_id, ([_position, _dir] call xea_fnc_serializePosition), _simulation, _side] call xea_fnc_serializeProjectile]
+					["projectile", [_id, ([_position, _dir] call anrop_aar_fnc_serializePosition), _simulation, _side] call anrop_aar_fnc_serializeProjectile]
 				];
-				_arr call xea_fnc_sendEvent;
+				_arr call anrop_aar_fnc_sendEvent;
 			};
 		};
 	};
@@ -40,6 +40,6 @@ waitUntil {
 
 _arr = ["object",
 	["type", ["string", "ProjectileDestroyed"]],
-	["projectile", [_id, ([_position, _dir] call xea_fnc_serializePosition), _simulation, _side] call xea_fnc_serializeProjectile]
+	["projectile", [_id, ([_position, _dir] call anrop_aar_fnc_serializePosition), _simulation, _side] call anrop_aar_fnc_serializeProjectile]
 ];
-_arr call xea_fnc_sendEvent;
+_arr call anrop_aar_fnc_sendEvent;

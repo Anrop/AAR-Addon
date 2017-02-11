@@ -1,5 +1,5 @@
 private "_unitCacheKey";
-_unitCacheKey = "stats_unit_cache";
+_unitCacheKey = "anrop_aar_unit_cache";
 
 while { true } do {
 	_reportUnit = {
@@ -11,9 +11,9 @@ while { true } do {
 			_uid = getPlayerUID _x;
 		};
 		private "_player";
-		_player = [_name, _uid] call xea_fnc_serializePlayer;
+		_player = [_name, _uid] call anrop_aar_fnc_serializePlayer;
 		private "_unit";
-		_unit = _x call xea_fnc_serializeUnit;
+		_unit = _x call anrop_aar_fnc_serializeUnit;
 
 		private "_arr";
 		_arr = ["object",
@@ -30,10 +30,10 @@ while { true } do {
 		};
 
 		private "_serialized";
-		_serialized = _arr call xea_fnc_serializeJson;
+		_serialized = _arr call anrop_aar_fnc_serializeJson;
 		if (_serialized != _cached) then {
 			_x setVariable [_unitCacheKey, _serialized];
-			_serialized call xea_fnc_sendJson;
+			_serialized call anrop_aar_fnc_sendJson;
 		};
 	};
 
