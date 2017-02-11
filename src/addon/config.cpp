@@ -1,21 +1,58 @@
 class CfgPatches
 {
-	class xea_testExtension
+	class anrop_aar
 	{
 		units[] = { };
 		weapons[] = { };
 		requiredVersion = 0.100000;
 		requiredAddons[] = {"CBA_Extended_EventHandlers"};
 		version = "1";
-		projectName = "ARMA Stat track";
-		author = "xealot";
+		projectName = "Anrop AAR";
+		author = "Anrop";
+	};
+};
+
+class CfgFunctions
+{
+	class anrop_aar
+	{
+		class events
+		{
+			file = "anrop_aar\events";
+			class eventHit {};
+			class eventKilled {};
+			class eventMissionEnded {};
+			class eventPlayerConnected {};
+			class eventPlayerDisconnected {};
+			class eventUnitFired {};
+			class eventVehicleFired {};
+		};
+		class functions
+		{
+			file = "anrop_aar\functions";
+			class addUnitEventHandlers {};
+			class addVehicleEventHandlers {};
+			class init {};
+			class reportUnitPositions {};
+			class reportVehiclePositions {};
+			class sendEvent {};
+			class sendJson {};
+			class serializeJson {};
+			class serializeMission {};
+			class serializePlayer {};
+			class serializePosition {};
+			class serializeProjectile {};
+			class serializeUnit {};
+			class serializeVehicle {};
+			class trackProjectile {};
+		};
 	};
 };
 
 class Extended_PostInit_EventHandlers
 {
-    class xea_armastat
+    class anrop_aar
 	{
-        Init = "call compile preprocessFileLineNumbers '\xea_armastat\init.sqf'";
+        Init = "call anrop_aar_fnc_init";
 	};
 };

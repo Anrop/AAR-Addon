@@ -1,10 +1,10 @@
 private "_vehicleCacheKey";
-_vehicleCacheKey = "stats_vehicle_cache";
+_vehicleCacheKey = "anrop_aar_vehicle_cache";
 
 while { true } do {
 	_reportVehicle = {
 		private "_vehicle";
-		_vehicle = _x call xea_fnc_serializeVehicle;
+		_vehicle = _x call anrop_aar_fnc_serializeVehicle;
 
 		private "_arr";
 		_arr = ["object",
@@ -20,10 +20,10 @@ while { true } do {
 		};
 
 		private "_serialized";
-		_serialized = _arr call xea_fnc_serializeJson;
+		_serialized = _arr call anrop_aar_fnc_serializeJson;
 		if (_serialized != _cached) then {
 			_x setVariable [_vehicleCacheKey, _serialized];
-			_serialized call xea_fnc_sendJson;
+			_serialized call anrop_aar_fnc_sendJson;
 		};
 	};
 

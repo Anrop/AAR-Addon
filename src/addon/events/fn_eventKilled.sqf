@@ -33,7 +33,7 @@ _arr = [
 	["victim_posZ", (getPosASL (_this select 0)) select 2],
 	["killer_posX", (getPosASL (_this select 1)) select 0],
 	["killer_posY", (getPosASL (_this select 1)) select 1],
-	["killer_posZ", (getPosASL (_this select 1)) select 2],
+	["killer_posZ", (getPosASL (_this select 1)) select 2]
 ];
 
-//_arr call xea_fnc_sendEvent;
+//_arr call anrop_aar_fnc_sendEvent;

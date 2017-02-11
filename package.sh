@@ -2,6 +2,6 @@ set -e
 
 FLAGS=-PW
 SOURCE="src/addon"
-TARGET="bin/xea_armastat"
+TARGET="bin/anrop_aar"
 
 makepbo $FLAGS $SOURCE $TARGET
