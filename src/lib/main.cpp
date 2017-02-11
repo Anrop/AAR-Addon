@@ -34,6 +34,7 @@ Organizer organizer;
             std::string hostname = config.getHostname();
 
             if (hostname != "") {
+                organizer.setAuthorization(config.getAuthorization());
                 organizer.setHostname(hostname);
                 strncpy(output, hostname.c_str(), outputSize);
                 return;

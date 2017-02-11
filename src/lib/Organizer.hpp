@@ -15,6 +15,7 @@ class Organizer {
 public:
   Organizer();
   ~Organizer();
+  void setAuthorization(const std::string& authorization);
   void setHostname(const std::string& hostname);
   std::string getMissionId();
   void setMissionId(const std::string& id);
@@ -25,6 +26,7 @@ public:
   enum status_response {OK, UNAUTHORIZED, CONNECTION_FAILED, PARSE_ERROR, UNKNOWN};
 
   struct config_t {
+      std::string authorization;
       std::string hostname;
       std::string id;
   };

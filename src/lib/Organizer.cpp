@@ -14,6 +14,10 @@ Organizer::~Organizer() {
     delete queueThread;
 }
 
+void Organizer::setAuthorization(const string& authorization) {
+    settings.authorization = authorization;
+}
+
 void Organizer::setHostname(const string& hostname) {
     settings.hostname = hostname;
 }
