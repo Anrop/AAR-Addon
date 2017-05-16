@@ -28,7 +28,7 @@ waitUntil {
 
 				_arr = ["object",
 					["type", ["string", "ProjectilePosition"]],
-					["projectile", [_id, ([_position, _dir] call anrop_aar_fnc_serializePosition), _simulation, _side] call anrop_aar_fnc_serializeProjectile]
+					["projectile", [_id, ([_position, _dir] call anrop_aar_fnc_serializePosition), _side, _simulation] call anrop_aar_fnc_serializeProjectile]
 				];
 				_arr call anrop_aar_fnc_sendEvent;
 			};
@@ -40,6 +40,6 @@ waitUntil {
 
 _arr = ["object",
 	["type", ["string", "ProjectileDestroyed"]],
-	["projectile", [_id, ([_position, _dir] call anrop_aar_fnc_serializePosition), _simulation, _side] call anrop_aar_fnc_serializeProjectile]
+	["projectile", [_id, ([_position, _dir] call anrop_aar_fnc_serializePosition), _side, _simulation] call anrop_aar_fnc_serializeProjectile]
 ];
 _arr call anrop_aar_fnc_sendEvent;
