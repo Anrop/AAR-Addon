@@ -1,26 +1,16 @@
-params ["_vehicle", "_weapon", "_muzzle", "_mode", "_ammo", "_magazine", "_projectile"];
+params ["_vehicle", "", "", "", "_ammo", "", "_projectile"];
 
 if (isNull _projectile) then {
 	_projectile = nearestObject [_vehicle, _ammo];
 };
 
-private "_id";
-_id = format ["%1", _projectile];
+private _id = format ["%1", _projectile];
+private _position = getPosASL _projectile;
+private _dir = direction _projectile;
+private _side = side _vehicle;
+private _simulation = getText (configFile >> "cfgAmmo" >> typeOf _projectile >> "simulation");
 
-private "_position";
-_position = getPosASL _projectile;
-
-private "_dir";
-_dir = direction _projectile;
-
-private "_side";
-_side = side _vehicle;
-
-private "_simulation";
-_simulation = getText (configFile >> "cfgAmmo" >> typeOf _projectile >> "simulation");
-
-private "_arr";
-_arr = ["object",
+private _arr = ["object",
 	["type", ["string", "ProjectileCreated"]],
 	["projectile", [_id, ([_position, _dir] call anrop_aar_fnc_serializePosition), _side, _simulation] call anrop_aar_fnc_serializeProjectile],
 	["vehicle", _vehicle call anrop_aar_fnc_serializeVehicle]

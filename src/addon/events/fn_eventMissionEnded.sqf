@@ -1,4 +1,4 @@
-_arr = [
+private _arr = [
 	["type", "mission_ended"],
 	["end_type", _this]
 ];

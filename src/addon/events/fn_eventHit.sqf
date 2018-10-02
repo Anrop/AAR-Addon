@@ -19,17 +19,17 @@ Contains the unit itself in case of collisions.
 damage: Number - Level of damage caused by the hit
 */
 
-_victim = [-1, name (_this select 0)];
+private _victim = [-1, name (_this select 0)];
 if (isPlayer (_this select 0)) then {
 	_victim = [getPlayerUID (_this select 0), _victim select 1];
 };
 
-_attacker = [-1, name (_this select 1)];
+private _attacker = [-1, name (_this select 1)];
 if (isPlayer (_this select 1)) then {
 	_attacker = [getPlayerUID (_this select 1), _attacker select 1];
 };
 
-_arr = [
+private _arr = [
 	["type", "unit_hit"],
 	["victim_uid", _victim select 0],
 	["victim_nid", netId (_this select 0)],

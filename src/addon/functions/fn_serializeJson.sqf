@@ -11,10 +11,7 @@ Example formats:
 */
 
 SerializeJson = {
-  private "_type";
-  _type = _this select 0;
-  private "_value";
-  _value = _this select 1;
+  params ["_type", "_value"];
 
   switch _type do
   {
@@ -32,10 +29,9 @@ SerializeJson = {
       _objects = [];
 
       {
-        private "_objKey";
-        _objKey = _x select 0;
-        private "_objValue";
-        _objValue = (_x select 1) call SerializeJson;
+        params ["_objKey", "_objValue"];
+
+        _objValue = _objValue call SerializeJson;
 
         _objects pushBack (format ["""%1"":%2", _objKey, _objValue]);
       } forEach (_this select [1, count _this]);
@@ -44,8 +40,7 @@ SerializeJson = {
     };
     case "array":
     {
-      private "_array";
-      _array = [];
+      private _array = [];
 
       {
         _array pushBack (_x call SerializeJson);
