@@ -1,8 +1,6 @@
 params ["_position", "_dir"];
 
-private _x = _position select 0;
-private _y = _position select 1;
-private _z = _position select 2;
+_position params ["_x", "_y", "_z"];
 
 ["object",
     ["dir", ["number", _dir]],

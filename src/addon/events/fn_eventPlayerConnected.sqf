@@ -1,7 +1,7 @@
-if ((_this select 0) isEqualTo "") exitWith {};
+params ["_uid", "_name"];
 
-private _name = _this select 1;
-private _uid = _this select 0;
+if (_uid isEqualTo "") exitWith {};
+
 private _player = [_name, _uid] call anrop_aar_fnc_serializePlayer;
 
 private _arr = ["object",
