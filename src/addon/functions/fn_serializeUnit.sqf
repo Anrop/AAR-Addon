@@ -1,15 +1,10 @@
 params ["_unit"];
 
-private "_id";
-_id = netId _unit;
-private "_lifeState";
-_lifeState = lifeState _unit;
-private "_name";
-_name = name _unit;
-private "_position";
-_position = ([getPosASL _unit, direction _unit] call anrop_aar_fnc_serializePosition);
-private "_side";
-_side = side _unit;
+private _id = netId _unit;
+private _lifeState = lifeState _unit;
+private _name = name _unit;
+private _position = ([getPosASL _unit, direction _unit] call anrop_aar_fnc_serializePosition);
+private _side = side _unit;
 
 private "_arr";
 _arr = ["object",
@@ -21,8 +16,7 @@ _arr = ["object",
 ];
 
 if (vehicle _unit != _unit) then {
-	private "_vehicleId";
-	_vehicleId = netId vehicle _unit;
+	private _vehicleId = netId vehicle _unit;
 	_arr pushBack ["vehicle_id", ["string", _vehicleId]];
 };
 

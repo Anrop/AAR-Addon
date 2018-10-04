@@ -1,22 +1,15 @@
 params ["_projectile", "_side"];
 
-private "_id";
-_id = format ["%1", _projectile];
+private _id = format ["%1", _projectile];
+private _position = getPosASL _projectile;
+private _dir = direction _projectile;
 
-private "_position";
-_position = getPosASL _projectile;
+private _simulation = getText (configFile >> "cfgAmmo" >> typeOf _projectile >> "simulation");
 
-private "_dir";
-_dir = direction _projectile;
-
-private "_simulation";
-_simulation = getText (configFile >> "cfgAmmo" >> typeOf _projectile >> "simulation");
-
-private "_lastTime";
-_lastTime = time;
+private _lastTime = time;
 
 waitUntil {
-	if (not isNull _projectile) then {
+	if !(isNull _projectile) then {
 		_dir = direction _projectile;
 		_position = getPosASL _projectile;
 
@@ -26,7 +19,7 @@ waitUntil {
 			[_id, _position, _dir, _simulation, _side] spawn {
 				params ["_id", "_position", "_dir", "_simulation", "_side"];
 
-				_arr = ["object",
+				private _arr = ["object",
 					["type", ["string", "ProjectilePosition"]],
 					["projectile", [_id, ([_position, _dir] call anrop_aar_fnc_serializePosition), _side, _simulation] call anrop_aar_fnc_serializeProjectile]
 				];
@@ -38,7 +31,7 @@ waitUntil {
 	isNull _projectile;
 };
 
-_arr = ["object",
+private _arr = ["object",
 	["type", ["string", "ProjectileDestroyed"]],
 	["projectile", [_id, ([_position, _dir] call anrop_aar_fnc_serializePosition), _side, _simulation] call anrop_aar_fnc_serializeProjectile]
 ];

@@ -17,8 +17,8 @@ if (isMultiplayer) then {
 
 	/* Initialize plugin. Get unique ID from server */
 	anrop_aar_extension callExtension format["setup;%1", anrop_aar_hostname];
-	_mission = call anrop_aar_fnc_serializeMission;
-	_missionData = _mission call anrop_aar_fnc_serializeJson;
+	private _mission = call anrop_aar_fnc_serializeMission;
+	private _missionData = _mission call anrop_aar_fnc_serializeJson;
 	anrop_aar_id = anrop_aar_extension callExtension format["mission;%1", _missionData];
 
 	/*
@@ -48,13 +48,13 @@ if (isMultiplayer) then {
 	[] spawn {
 		while { true } do {
 			{
-				if (!(_x getVariable ["anrop_aar", false])) then {
+				if !(_x getVariable ["anrop_aar", false]) then {
 					_x call anrop_aar_fnc_addUnitEventHandlers;
 				};
 			} forEach allUnits;
 
 			{
-				if (!(_x getVariable ["anrop_aar", false])) then {
+				if !(_x getVariable ["anrop_aar", false]) then {
 					_x call anrop_aar_fnc_addVehicleEventHandlers;
 				};
 			} forEach vehicles;

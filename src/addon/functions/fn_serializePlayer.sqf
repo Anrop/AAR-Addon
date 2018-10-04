@@ -1,6 +1,6 @@
-params ["_name, _uid"];
+params ["_name", "_uid"];
 
 ["object",
-    ["name", ["string", _name]],
-    ["uid", ["string", _uid]]
+	["name", ["string", _name]],
+	["uid", ["string", _uid]]
 ];
