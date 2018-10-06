@@ -19,6 +19,7 @@ Contains the unit itself in case of collisions.
 damage: Number - Level of damage caused by the hit
 */
 
+/*
 private _victim = [-1, name (_this select 0)];
 if (isPlayer (_this select 0)) then {
 	_victim = [getPlayerUID (_this select 0), _victim select 1];
@@ -45,4 +46,5 @@ private _arr = [
 	["attacker_posZ", (getPosASL (_this select 1)) select 2]
 ];
 
-//_arr call anrop_aar_fnc_sendEvent;
+_arr call anrop_aar_fnc_sendEvent;
+*/
