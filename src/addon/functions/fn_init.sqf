@@ -29,10 +29,12 @@ if (isMultiplayer) then {
 	/* TODO: check if dedicated creates a dummy user for connection events */
 	if (isServer) then {
 		["anrop_aar_connected", "onPlayerConnected", {
+			params ["_uid", "_name"];
 			[_uid, _name] call anrop_aar_fnc_playerConnected;
 		}] call BIS_fnc_addStackedEventHandler;
 
 		["anrop_aar_disconnected", "onPlayerDisconnected", {
+			params ["_uid", "_name"];
 			[_uid, _name] call anrop_aar_fnc_playerDisconnected;
 		}] call BIS_fnc_addStackedEventHandler;
 
@@ -65,12 +67,12 @@ if (isMultiplayer) then {
 
 	/* Periodically send unit positions */
 	if (anrop_aar_position_reporting > 0) then {
-		(anrop_aar_position_reporting) spawn {
-			(_this) call anrop_aar_fnc_reportUnitPositions;
+		[] spawn {
+			anrop_aar_position_reporting call anrop_aar_fnc_reportUnitPositions;
 		};
 
-		(anrop_aar_position_reporting) spawn {
-			(_this) call anrop_aar_fnc_reportVehiclePositions;
+		[] spawn {
+			anrop_aar_position_reporting call anrop_aar_fnc_reportVehiclePositions;
 		};
 	};
 };

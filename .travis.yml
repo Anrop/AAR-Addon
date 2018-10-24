@@ -1,3 +1,5 @@
+language: python
+python: '3.4'
 sudo: required
 services:
   - docker
@@ -5,7 +7,9 @@ before_install:
   - curl -L https://github.com/docker/compose/releases/download/1.4.0/docker-compose-`uname -s`-`uname -m` > docker-compose
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
+  - pip3 install sqflint
 script:
+  - sqflint --directory src/addon --exit w
   - docker-compose run build
   - docker-compose run package
   - ls bin
