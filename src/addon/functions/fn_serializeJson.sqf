@@ -29,7 +29,7 @@ SerializeJson = {
       _objects = [];
 
       {
-        params ["_objKey", "_objValue"];
+        _x params ["_objKey", "_objValue"];
 
         _objValue = _objValue call SerializeJson;
 
