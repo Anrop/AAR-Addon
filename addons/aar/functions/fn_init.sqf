@@ -63,6 +63,10 @@ addMissionEventHandler ["Ended", { (_this) call anrop_aar_fnc_missionEnded }];
 // Periodically send unit positions
 if (anrop_aar_position_reporting > 0) then {
 	[] spawn {
+		anrop_aar_position_reporting call anrop_aar_fnc_reportMarkerPositions;
+	};
+
+	[] spawn {
 		anrop_aar_position_reporting call anrop_aar_fnc_reportUnitPositions;
 	};
 

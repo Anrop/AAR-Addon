@@ -35,11 +35,13 @@ class CfgFunctions
 			class addUnitEventHandlers {};
 			class addVehicleEventHandlers {};
 			class init {};
+			class reportMarkerPositions {};
 			class reportUnitPositions {};
 			class reportVehiclePositions {};
 			class sendEvent {};
 			class sendJson {};
 			class serializeJson {};
+			class serializeMarker {};
 			class serializeMission {};
 			class serializePlayer {};
 			class serializePosition {};
