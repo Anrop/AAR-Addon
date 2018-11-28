@@ -24,7 +24,9 @@ class CfgFunctions
 			class eventMissionEnded {};
 			class eventPlayerConnected {};
 			class eventPlayerDisconnected {};
+			class eventUnitDeleted {};
 			class eventUnitFired {};
+			class eventVehicleDeleted {};
 			class eventVehicleFired {};
 		};
 		class functions
