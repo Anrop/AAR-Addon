@@ -34,6 +34,7 @@ class CfgFunctions
 			file = "anrop_aar\functions";
 			class addUnitEventHandlers {};
 			class addVehicleEventHandlers {};
+			class getUnitName {};
 			class init {};
 			class reportUnitPositions {};
 			class reportVehiclePositions {};

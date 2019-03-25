@@ -5,7 +5,7 @@ while { true } do {
 	private _reportUnit = {
 		params ["_reportedUnit"];
 
-		private _name = name _reportedUnit;
+		private _name = _reportedUnit call anrop_aar_fnc_getUnitName;
 		private _uid = "";
 		if (isPlayer _reportedUnit) then {
 			_uid = getPlayerUID _reportedUnit;
