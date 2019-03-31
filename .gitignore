@@ -1,3 +1,13 @@
 addons/*.pbo
-bin/*
-releases/*
+build/
+releases/
+
+# CLion
+.idea/
+
+# CMake
+CMakeSettings.json
+cmake-build-*/
+
+# Visual Studio
+.vs/

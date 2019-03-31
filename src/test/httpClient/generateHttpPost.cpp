@@ -1,7 +1,8 @@
-#include "../catch.hpp"
+#include <catch2/catch.hpp>
+
 #include <httpClient.hpp>
 
-SCENARIO( "httpClient can make post", "[httpClient]" ) {
+TEST_CASE( "httpClient can make post", "[httpClient]" ) {
 
     GIVEN( "An httpClient" ) {
         httpClient client;

@@ -1,7 +1,8 @@
-#include "../catch.hpp"
+#include <catch2/catch.hpp>
+
 #include <EventManager.hpp>
 
-SCENARIO( "EventManager can clear events", "[EventManager]" ) {
+TEST_CASE( "EventManager can clear events", "[EventManager]" ) {
 
     GIVEN( "An EventManager with one event" ) {
         EventManager em;

@@ -1,7 +1,8 @@
-#include "../catch.hpp"
+#include <catch2/catch.hpp>
+
 #include <Config.hpp>
 
-SCENARIO("Config can parse aar.json", "[Config]") {
+TEST_CASE("Config can parse aar.json", "[Config]") {
 
     GIVEN("An a config object") {
         Config config;

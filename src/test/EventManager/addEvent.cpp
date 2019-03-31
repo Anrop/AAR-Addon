@@ -1,7 +1,8 @@
-#include "../catch.hpp"
+#include <catch2/catch.hpp>
+
 #include <EventManager.hpp>
 
-SCENARIO( "EventManager can add event", "[EventManager]" ) {
+TEST_CASE( "EventManager can add event", "[EventManager]" ) {
 
     GIVEN( "An empty EventManager" ) {
         EventManager em;
