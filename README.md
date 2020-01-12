@@ -23,3 +23,13 @@ $ docker-compose build
 This will install the toolchain necessary to compile the binaries and also prepare all the dependencies such as BOOST.
 Finally you can trigger a build of the libraries by running the docker app like so:  
 $ docker-compose up
+
+Config
+------
+Add a JSON file to your CWD when launching Arma named `aar.json`.
+The file should have the following format:
+````json
+{
+	"hostname": "api.aar.anrop.se"
+}
+````

@@ -1,3 +1,4 @@
+#include "Config.hpp"
 #include "Organizer.hpp"
 
 /*
@@ -12,6 +13,7 @@
 
 using namespace std;
 
+Config config;
 Organizer organizer;
 
 #if TARGET_WINDOWS
@@ -25,8 +27,19 @@ Organizer organizer;
     string function_ = s_function.substr(0, s_function.find(';'));
     string data = s_function.substr(s_function.find(';')+1, s_function.length());
 
-    if (function_ == "setup") {
-            organizer.setHostname(data);
+    if (function_ == "init") {
+        bool result = config.parseConfigFile();
+
+        if (result) {
+            std::string hostname = config.getHostname();
+
+            if (hostname != "") {
+                organizer.setHostname(hostname);
+                strncpy(output, hostname.c_str(), outputSize);
+            }
+        }
+
+        strncpy(output, "ERROR", outputSize);
     } else if (function_ == "mission") {
         /* TODO: Get IP of current machine */
         Organizer::status_response status = organizer.createMission(data);
