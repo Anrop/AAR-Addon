@@ -1,12 +1,5 @@
 // Setup config
-anrop_aar_hostname = "arma-stats-api.herokuapp.com";
 anrop_aar_position_reporting = 1;
-if (isFilePatchingEnabled) then {
-	anrop_aar_settings_file = compile preprocessFileLineNumbers "\userconfig\anrop_aar\config.sqf";
-	if (!isNil "anrop_aar_settings_file") then {
-		[] call anrop_aar_settings_file;
-	};
-};
 anrop_aar_extension = "anrop_aar";	// dll
 
 if (isMultiplayer) then {
@@ -16,7 +9,13 @@ if (isMultiplayer) then {
 	*/
 
 	/* Initialize plugin. Get unique ID from server */
-	anrop_aar_extension callExtension format["setup;%1", anrop_aar_hostname];
+	private _init = anrop_aar_extension callExtension format["init", anrop_aar_hostname];
+
+	if (_init == "ERROR") exitWith {
+		diag_log "AAR could not be initialized";
+	};
+
+	diag_log format ["AAR initialized: $1", _init];
 	private _mission = call anrop_aar_fnc_serializeMission;
 	private _missionData = _mission call anrop_aar_fnc_serializeJson;
 	anrop_aar_id = anrop_aar_extension callExtension format["mission;%1", _missionData];
