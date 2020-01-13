@@ -9,7 +9,7 @@ using namespace std;
 httpClient::httpClient() {
 }
 
-httpClient::httpClient(const string& url, const string& data) {
+httpClient::httpClient(const string& url, const string& authorization, const string& data) {
     string url_to_parse = url;
     if (url_to_parse.substr(0, 7) == "http://")
         url_to_parse = url_to_parse.substr(7, url_to_parse.length());
@@ -17,26 +17,32 @@ httpClient::httpClient(const string& url, const string& data) {
     string host = url_to_parse.substr(0, url_to_parse.find("/"));
     string resource = url_to_parse.substr(url_to_parse.find("/"), url_to_parse.length());
 
-    string httpData = generateHttpPost(host, url, data);
+    string httpData = generateHttpPost(host, url, authorization, data);
     httpPost(host, httpData);
 }
 
-httpClient::httpClient(const string& host, const string& url, const string& data) {
-    string httpData = generateHttpPost(host, url, data);
+httpClient::httpClient(const string& host, const string& url, const string& authorization, const string& data) {
+    string httpData = generateHttpPost(host, url, authorization, data);
     httpPost(host, httpData);
 }
 
-string httpClient::generateHttpPost(const string& host, const string& url, const string& data) {
+string httpClient::generateHttpPost(const string& host, const string& url, const string& authorization, const string& data) {
     int content_length = data.length();
-
-    string response = "POST " + url + " HTTP/1.1\r\n" +
-        "Host: " + host + "\r\n" +
+    string headers = "Host: " + host + "\r\n" +
         "Connection: close\r\n" +
         "Content-Type: application/json\r\n" +
-        "Content-Length: " + std::to_string(content_length) + "\r\n" +
-        "\r\n" + data;
+        "Content-Length: " + std::to_string(content_length) + "\r\n";
 
-    return response;
+    if (authorization.length() > 0) {
+        headers = headers + "Authorization: " + authorization + "\r\n";
+    }
+
+    string request = "POST " + url + " HTTP/1.1\r\n" +
+        headers +
+        "\r\n" +
+        data;
+
+    return request;
 }
 
 void httpClient::parseData(const string& data) {

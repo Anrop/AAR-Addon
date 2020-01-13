@@ -30,6 +30,7 @@ Add a JSON file to your CWD when launching Arma named `aar.json`.
 The file should have the following format:
 ````json
 {
+	"authorization": "token authorization", // Optional
 	"hostname": "api.aar.anrop.se"
 }
 ````

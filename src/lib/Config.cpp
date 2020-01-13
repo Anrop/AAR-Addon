@@ -1,6 +1,10 @@
 #include "Config.hpp"
 #include <boost/date_time.hpp>
 
+std::string Config::getAuthorization() {
+    return authorization;
+}
+
 std::string Config::getHostname() {
     return hostname;
 }
@@ -15,6 +19,10 @@ bool Config::parseConfigFile() {
             }
 
             hostname = config["hostname"];
+
+            if (config["authorization"].is_string()) {
+                authorization = config["authorization"];
+            }
 
             return true;
         }
