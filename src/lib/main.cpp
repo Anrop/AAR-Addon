@@ -36,6 +36,7 @@ Organizer organizer;
             if (hostname != "") {
                 organizer.setHostname(hostname);
                 strncpy(output, hostname.c_str(), outputSize);
+                return;
             }
         }
 
