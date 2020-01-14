@@ -76,7 +76,7 @@ void Organizer::processEventQueue() {
         event_mtx.unlock();
 
         if (settings.hostname.length() > 0 && settings.id.length() > 0) {
-            httpClient client = httpClient(settings.hostname, ("/missions/" + settings.id + "/events"), json_out);
+            httpClient client = httpClient(settings.hostname, ("/missions/" + settings.id + "/events"), settings.authorization, json_out);
 
             if (client.status != httpClient::OK) {
                 failCounter++;
@@ -118,7 +118,7 @@ Organizer::status_response Organizer::createMission(const string& data) {
         // Make sure data is actual JSON
         json jsonData = json::parse(data);
 
-        httpClient client = httpClient(settings.hostname, "/missions", jsonData.dump());
+        httpClient client = httpClient(settings.hostname, "/missions", settings.authorization, jsonData.dump());
         if (client.status == httpClient::OK) {
             return parseCreateMission(client.getResult());
         } else if (client.status == httpClient::CONNECTION_FAILED) {

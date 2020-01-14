@@ -9,18 +9,6 @@ using namespace std;
 httpClient::httpClient() {
 }
 
-httpClient::httpClient(const string& url, const string& authorization, const string& data) {
-    string url_to_parse = url;
-    if (url_to_parse.substr(0, 7) == "http://")
-        url_to_parse = url_to_parse.substr(7, url_to_parse.length());
-
-    string host = url_to_parse.substr(0, url_to_parse.find("/"));
-    string resource = url_to_parse.substr(url_to_parse.find("/"), url_to_parse.length());
-
-    string httpData = generateHttpPost(host, url, authorization, data);
-    httpPost(host, httpData);
-}
-
 httpClient::httpClient(const string& host, const string& url, const string& authorization, const string& data) {
     string httpData = generateHttpPost(host, url, authorization, data);
     httpPost(host, httpData);
