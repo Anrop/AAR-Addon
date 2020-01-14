@@ -1,3 +1,0 @@
-anrop_aar
-prefix=anrop_aar
-Pbo Type is: Arma
