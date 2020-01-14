@@ -9,7 +9,7 @@ before_install:
   - sudo mv docker-compose /usr/local/bin
   - pip3 install sqflint
 script:
-  - sqflint --directory src/addon --exit w
+  - sqflint --directory addons --exit w
   - docker-compose run build
   - docker-compose run package
   - ls bin

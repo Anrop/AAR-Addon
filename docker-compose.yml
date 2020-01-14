@@ -5,8 +5,8 @@ build:
     - .:/code
   working_dir: /code
 package:
-  image: anrop/mikero-tools
-  command: sh package.sh
+  image: hemtt/hemtt:0.6.1
+  command: hemtt build --release --force
   volumes:
     - .:/code
   working_dir: /code
