@@ -15,7 +15,7 @@ if (isMultiplayer) then {
 		diag_log "AAR could not be initialized";
 	};
 
-	diag_log format ["AAR initialized: $1", _init];
+	diag_log format ["AAR initialized: %1", _init];
 	private _mission = call anrop_aar_fnc_serializeMission;
 	private _missionData = _mission call anrop_aar_fnc_serializeJson;
 	anrop_aar_id = anrop_aar_extension callExtension format["mission;%1", _missionData];
