@@ -7,7 +7,6 @@
 class httpClient {
 public:
     httpClient();
-    httpClient(const std::string& url, const std::string& authorization, const std::string& data);
     httpClient(const std::string& host, const std::string& url, const std::string& authorization, const std::string& data);
     std::string generateHttpPost(const std::string& host, const std::string& url, const std::string& authorization, const std::string& data);
     std::string getResult();
