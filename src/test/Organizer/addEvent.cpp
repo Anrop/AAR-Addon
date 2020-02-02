@@ -1,7 +1,8 @@
-#include "../catch.hpp"
+#include <catch2/catch.hpp>
+
 #include <Organizer.hpp>
 
-SCENARIO( "Organizer can add events", "[Organizer]" ) {
+TEST_CASE( "Organizer can add events", "[Organizer]" ) {
 
     GIVEN( "An Organizer" ) {
         Organizer organizer;

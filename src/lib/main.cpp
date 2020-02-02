@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "Config.hpp"
 #include "Organizer.hpp"
 
@@ -16,7 +18,7 @@ using namespace std;
 Config config;
 Organizer organizer;
 
-#if TARGET_WINDOWS
+#if WIN32
     extern "C" void __stdcall _RVExtension(char *output, int outputSize, const char *function)
 #else
     extern "C" void RVExtension(char *output, int outputSize, const char *function)

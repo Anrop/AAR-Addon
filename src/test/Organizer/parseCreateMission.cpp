@@ -1,7 +1,8 @@
-#include "../catch.hpp"
+#include <catch2/catch.hpp>
+
 #include <Organizer.hpp>
 
-SCENARIO( "Organizer can parse mission response", "[Organizer]" ) {
+TEST_CASE( "Organizer can parse mission response", "[Organizer]" ) {
 
     GIVEN( "An Organizer" ) {
         Organizer organizer;

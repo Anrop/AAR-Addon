@@ -1,7 +1,8 @@
-#include "../catch.hpp"
+#include <catch2/catch.hpp>
+
 #include <httpClient.hpp>
 
-SCENARIO( "httpClient can parse response", "[httpClient]" ) {
+TEST_CASE( "httpClient can parse response", "[httpClient]" ) {
 
     GIVEN( "An httpClient" ) {
         httpClient client;

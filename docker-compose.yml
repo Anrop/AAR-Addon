@@ -1,9 +1,3 @@
-build:
-  image: anrop/arma-extensions
-  command: sh build.sh
-  volumes:
-    - .:/code
-  working_dir: /code
 package:
   image: hemtt/hemtt:0.6.1
   command: hemtt build --release --force

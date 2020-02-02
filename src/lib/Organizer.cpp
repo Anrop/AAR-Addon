@@ -1,6 +1,7 @@
+#include <iostream>
 #include "Organizer.hpp"
 #include "httpClient.hpp"
-#include "json.hpp"
+#include <nlohmann/json.hpp>
 
 using json = nlohmann::json;
 using namespace std;
