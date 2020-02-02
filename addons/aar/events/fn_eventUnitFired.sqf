@@ -18,4 +18,4 @@ private _arr = ["object",
 ];
 _arr call anrop_aar_fnc_sendEvent;
 
-[_projectile, _side] call anrop_aar_fnc_trackProjectile;
+[_projectile, _side] spawn anrop_aar_fnc_trackProjectile;
