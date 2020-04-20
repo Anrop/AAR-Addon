@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@master
 
       - name: HEMTT Build
-        uses: docker://hemtt/hemtt:0.6.1
+        uses: docker://hemtt/hemtt:0.7.6
         with:
           entrypoint: hemtt
           args: build --release
