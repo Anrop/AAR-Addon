@@ -20,10 +20,10 @@ bool Config::parseConfigFile() {
                 return false;
             }
 
-            hostname = config["hostname"];
+            hostname = config["hostname"].get<std::string>();
 
             if (config["authorization"].is_string()) {
-                authorization = config["authorization"];
+                authorization = config["authorization"].get<std::string>();
             }
 
             return true;
