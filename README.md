@@ -37,17 +37,17 @@ mkdir build
 cd build
 ```
 
-#### x86
+#### 32 bit
 
 ```
-cmake .. -G "Visual Studio 15 2017"
+cmake .. -G "Visual Studio 16 2019" -A Win32
 cmake --build .
 ```
 
-#### x64
+#### 64 bit
 
 ```
-cmake .. -G "Visual Studio 15 2017 Win64"
+cmake .. -G "Visual Studio 16 2019" -A x64
 cmake --build .
 ```
 
