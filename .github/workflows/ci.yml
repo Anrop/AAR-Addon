@@ -1,0 +1,123 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  sqflint:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@master
+
+      - uses: arma-actions/sqflint@v1.0
+        name: Validate with SQFLint
+
+  mod:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@master
+
+      - name: HEMTT Build
+        uses: docker://hemtt/hemtt:0.6.1
+        with:
+          entrypoint: hemtt
+          args: build --release
+
+      - name: Upload mod
+        uses: actions/upload-artifact@v1
+        with:
+          name: 'mod'
+          path: releases/1.0.0/@anrop
+
+  extension-linux:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Setup Python 3.7
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.7
+
+      - name: Install conan
+        run: pip install conan==1.24.1
+
+      - name: Install dependencies
+        run: |
+          sudo dpkg --add-architecture i386
+          sudo apt-get update
+          sudo apt-get install -y g++-multilib
+
+      - name: Build Linux 32 bit
+        run: mkdir build-linux32 && cd build-linux32 && cmake -DCMAKE_BUILD_TYPE=Release .. && make && make test
+
+      - name: Upload Linux 32 bit
+        uses: actions/upload-artifact@v1
+        with:
+          name: libanrop_aar.so
+          path: build-linux32/lib/libanrop_aar.so
+
+  extension-windows:
+    runs-on: windows-2019
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Install conan
+        run: pip install conan==1.24.1
+
+      - name: Build Windows 32 bit
+        run: mkdir build-win32 && cd build-win32 && cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A Win32 .. && cmake --build . --config Release && cmake.exe --build . --target RUN_TESTS --config Release
+
+      - name: Build Windows 64 bit
+        run: mkdir build-win64 && cd build-win64 && cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A x64 .. && cmake --build . --config Release && cmake --build . --target RUN_TESTS --config Release
+
+      - name: Upload Windows 32 bit
+        uses: actions/upload-artifact@v1
+        with:
+          name: anrop_aar.dll
+          path: build-win32/lib/anrop_aar.dll
+
+      - name: Upload Windows 64 bit
+        uses: actions/upload-artifact@v1
+        with:
+          name: anrop_aar_x64.dll
+          path: build-win64/lib/anrop_aar_x64.dll
+
+  package:
+    runs-on: ubuntu-18.04
+    needs:
+      - extension-linux
+      - extension-windows
+      - mod
+    steps:
+      - name: Download mod
+        uses: actions/download-artifact@v1
+        with:
+          name: 'mod'
+          path: '@anrop_aar'
+
+      - name: Download Linux x86
+        uses: actions/download-artifact@v1
+        with:
+          name: libanrop_aar.so
+          path: '@anrop_aar'
+
+      - name: Rename Linux extension
+        run: mv @anrop_aar/libanrop_aar.so @anrop_aar/anrop_aar.so
+
+      - name: Download Windows x86
+        uses: actions/download-artifact@v1
+        with:
+          name: anrop_aar.dll
+          path: '@anrop_aar'
+
+      - name: Download Windows x64
+        uses: actions/download-artifact@v1
+        with:
+          name: anrop_aar_x64.dll
+          path: '@anrop_aar'
+
+      - name: Upload built mod
+        uses: actions/upload-artifact@1.0.0
+        with:
+          name: '@anrop_aar'
+          path: '.'
