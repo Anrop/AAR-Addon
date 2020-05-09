@@ -1,3 +1,5 @@
+diag_log format ["[Anrop AAR] mission ended"];
+
 /*
 private _arr = [
 	["type", "mission_ended"],

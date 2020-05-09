@@ -30,16 +30,16 @@ diag_log format ["[Anrop AAR] mission id: %1", anrop_aar_id];
 
 // Add mission events
 ["anrop_aar_connected", "onPlayerConnected", {
-	params ["_uid", "_name"];
-	[_uid, _name] call anrop_aar_fnc_playerConnected;
+	params ["_id", "_uid", "_name"];
+	[_uid, _name] call anrop_aar_fnc_eventPlayerConnected;
 }] call BIS_fnc_addStackedEventHandler;
 
 ["anrop_aar_disconnected", "onPlayerDisconnected", {
-	params ["_uid", "_name"];
-	[_uid, _name] call anrop_aar_fnc_playerDisconnected;
+	params ["_id", "_uid", "_name"];
+	[_uid, _name] call anrop_aar_fnc_eventPlayerDisconnected;
 }] call BIS_fnc_addStackedEventHandler;
 
-addMissionEventHandler ["Ended", { (_this) call anrop_aar_fnc_missionEnded }];
+addMissionEventHandler ["MPEnded", { [] call anrop_aar_fnc_eventMissionEnded }];
 
 // Add event handlers to units created during the mission
 [] spawn {
