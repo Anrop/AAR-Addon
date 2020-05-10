@@ -1,3 +1,5 @@
+params ["_unit"];
+
 // Check if unit name is already known by ACE mod
 private _name = _unit getVariable ["ACE_Name", ""];
 
