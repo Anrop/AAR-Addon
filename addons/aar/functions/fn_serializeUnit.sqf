@@ -2,7 +2,7 @@ params ["_unit"];
 
 private _id = netId _unit;
 private _lifeState = lifeState _unit;
-private _name = name _unit;
+private _name = _unit call anrop_aar_fnc_getUnitName;
 private _position = ([getPosASL _unit, direction _unit] call anrop_aar_fnc_serializePosition);
 private _side = side _unit;
 
