@@ -72,11 +72,6 @@ addMissionEventHandler ["MPEnded", { [] call anrop_aar_fnc_eventMissionEnded }];
 
 // Periodically send unit positions
 if (anrop_aar_position_reporting > 0) then {
-	[] spawn {
-		anrop_aar_position_reporting call anrop_aar_fnc_reportUnitPositions;
-	};
-
-	[] spawn {
-		anrop_aar_position_reporting call anrop_aar_fnc_reportVehiclePositions;
-	};
+	[anrop_aar_fnc_reportUnitPositions, anrop_aar_position_reporting, []] call CBA_fnc_addPerFrameHandler;
+	[anrop_aar_fnc_reportVehiclePositions, anrop_aar_position_reporting, []] call CBA_fnc_addPerFrameHandler;
 };
