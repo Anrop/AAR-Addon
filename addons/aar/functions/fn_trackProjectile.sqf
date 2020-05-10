@@ -16,15 +16,11 @@ waitUntil {
 		if (time >= (_lastTime + 1)) then {
 			_lastTime = time;
 
-			[_id, _position, _dir, _simulation, _side] spawn {
-				params ["_id", "_position", "_dir", "_simulation", "_side"];
-
-				private _arr = ["object",
-					["type", ["string", "ProjectilePosition"]],
-					["projectile", [_id, ([_position, _dir] call anrop_aar_fnc_serializePosition), _side, _simulation] call anrop_aar_fnc_serializeProjectile]
-				];
-				_arr call anrop_aar_fnc_sendEvent;
-			};
+			private _arr = ["object",
+				["type", ["string", "ProjectilePosition"]],
+				["projectile", [_id, ([_position, _dir] call anrop_aar_fnc_serializePosition), _side, _simulation] call anrop_aar_fnc_serializeProjectile]
+			];
+			_arr call anrop_aar_fnc_sendEvent;
 		};
 	};
 
