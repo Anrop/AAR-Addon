@@ -1,5 +1,5 @@
 package:
-  image: hemtt/hemtt:0.6.1
+  image: hemtt/hemtt:0.7.6
   command: hemtt build --release --force
   volumes:
     - .:/code

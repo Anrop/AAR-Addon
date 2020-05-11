@@ -1,6 +1,8 @@
-addons/*.pbo
+*.biprivatekey
+*.pbo
 build/
-releases/
+keys/*
+releases/*
 
 # CLion
 .idea/
@@ -8,6 +10,9 @@ releases/
 # CMake
 CMakeSettings.json
 cmake-build-*/
+
+# HEMTT
+.hemtt/local
 
 # Visual Studio
 .vs/
