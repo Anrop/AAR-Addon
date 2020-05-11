@@ -2,9 +2,14 @@
 anrop_aar_position_reporting = 1;
 anrop_aar_extension = "anrop_aar";
 
-private _disabled = missionNamespace getVariable ["anrop_aar_disabled", false];
-if (_disabled) exitWith {
-	diag_log "[Anrop AAR] disabled by mission";
+private _disabledMissionVariable = missionNamespace getVariable ["anrop_aar_disabled", false];
+if (_disabledMissionVariable) exitWith {
+	diag_log "[Anrop AAR] disabled by mission variable";
+};
+
+private _disabledDescriptionExt = getNumber (missionConfigFile >> "anrop" >> "aar" >> "disabled") == 1;
+if (_disabledDescriptionExt) exitWith {
+	diag_log "[Anrop AAR] disabled by mission description.ext";
 };
 
 if (!isMultiplayer) exitWith {
