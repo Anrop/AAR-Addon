@@ -3,25 +3,23 @@
 #include "Config.hpp"
 #include "Organizer.hpp"
 
-/*
-    Windows
-    COMPILE WITH:
-    -D_WIN32_WINNT=0x0501
-    -shared -lboost_system -lboost_thread -lboost_date_time -lwsock32 -lws2_32
-
-    Linux
-    -shared -lboost_system -lboost_thread -lboost_date_time -lpthread -m32
-*/
-
 using namespace std;
 
 Config config;
 Organizer organizer;
 
-#if WIN32
-    extern "C" void __stdcall _RVExtension(char *output, int outputSize, const char *function)
+extern "C" {
+#ifdef WIN32
+    __declspec (dllexport) void __stdcall RVExtension(char *output, int outputSize, const char *function);
 #else
-    extern "C" void RVExtension(char *output, int outputSize, const char *function)
+    void RVExtension(char *output, int outputSize, const char *function);
+#endif
+}
+
+#ifdef WIN32
+void __stdcall RVExtension(char *output, int outputSize, const char *function)
+#else
+void RVExtension(char *output, int outputSize, const char *function)
 #endif
 {
     /* Format of function should be function name;data*/

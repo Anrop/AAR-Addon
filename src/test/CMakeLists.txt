@@ -4,7 +4,7 @@ file(GLOB test_SRC
 
 set(TEST_EXE_NAME anrop_aar_test)
 add_executable(${TEST_EXE_NAME} main.cpp ${test_SRC})
-target_link_libraries(${TEST_EXE_NAME} anrop_aar CONAN_PKG::catch2)
+target_link_libraries(${TEST_EXE_NAME} anrop_aar_static CONAN_PKG::catch2)
 
 include(CTest)
 include(Catch)

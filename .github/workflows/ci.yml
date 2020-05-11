@@ -74,13 +74,13 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: anrop_aar.dll
-          path: build-win32/lib/anrop_aar.dll
+          path: build-win32/bin/anrop_aar.dll
 
       - name: Upload Windows 64 bit
         uses: actions/upload-artifact@v1
         with:
           name: anrop_aar_x64.dll
-          path: build-win64/lib/anrop_aar_x64.dll
+          path: build-win64/bin/anrop_aar_x64.dll
 
   package:
     runs-on: ubuntu-18.04
