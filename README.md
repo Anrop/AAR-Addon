@@ -28,6 +28,20 @@ cmake ..
 make
 ```
 
+#### 32 bit
+
+```
+cmake .. -DCMAKE_TOOLCHAIN_FILE=../linux32.cmake
+cmake --build .
+```
+
+#### 64 bit
+
+```
+cmake ..
+cmake --build .
+```
+
 ### Windows
 
 You can also build the project using CLion, Visual Studio or other CMake compatible IDEs.
