@@ -1,34 +1,22 @@
 params ["_projectile", "_side"];
 
 private _id = format ["%1", _projectile];
-private _position = getPosASL _projectile;
-private _dir = direction _projectile;
-
 private _simulation = getText (configFile >> "cfgAmmo" >> typeOf _projectile >> "simulation");
 
-private _lastTime = time;
+[{
+	params ["_args", "_handle"];
+    _args params ["_projectile", "_id", "_side", "_simulation"];
 
-waitUntil {
-	if !(isNull _projectile) then {
-		_dir = direction _projectile;
-		_position = getPosASL _projectile;
-
-		if (time >= (_lastTime + 1)) then {
-			_lastTime = time;
-
-			private _arr = ["object",
-				["type", ["string", "ProjectilePosition"]],
-				["projectile", [_id, ([_position, _dir] call anrop_aar_fnc_serializePosition), _side, _simulation] call anrop_aar_fnc_serializeProjectile]
-			];
-			_arr call anrop_aar_fnc_sendEvent;
-		};
+	if (isNull _projectile) exitWith {
+		_handle call CBA_fnc_removePerFrameHandler;
 	};
 
-	isNull _projectile;
-};
+	_dir = direction _projectile;
+	_position = getPosASL _projectile;
 
-private _arr = ["object",
-	["type", ["string", "ProjectileDestroyed"]],
-	["projectile", [_id, ([_position, _dir] call anrop_aar_fnc_serializePosition), _side, _simulation] call anrop_aar_fnc_serializeProjectile]
-];
-_arr call anrop_aar_fnc_sendEvent;
+	private _arr = ["object",
+		["type", ["string", "ProjectilePosition"]],
+		["projectile", [_id, ([_position, _dir] call anrop_aar_fnc_serializePosition), _side, _simulation] call anrop_aar_fnc_serializeProjectile]
+	];
+	_arr call anrop_aar_fnc_sendEvent;
+}, 1, [_projectile, _id, _side, _simulation]] call CBA_fnc_addPerFrameHandler;
