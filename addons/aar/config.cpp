@@ -40,6 +40,8 @@ class CfgFunctions
 			class reportVehiclePositions {};
 			class sendEvent {};
 			class sendJson {};
+			class sendUnitPosition {};
+			class sendVehiclePosition {};
 			class serializeJson {};
 			class serializeMission {};
 			class serializePlayer {};

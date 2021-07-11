@@ -1,18 +1,24 @@
 #include <iostream>
+#include <nlohmann/json.hpp>
 
 #include "Config.hpp"
+#include "ArgsProcessor.hpp"
 #include "Organizer.hpp"
+#include "Utils.hpp"
 
 using namespace std;
 
 Config config;
 Organizer organizer;
+ArgsProcessor eventProcessor(&organizer);
 
 extern "C" {
 #ifdef WIN32
     __declspec (dllexport) void __stdcall RVExtension(char *output, int outputSize, const char *function);
+    __declspec (dllexport) int __stdcall RVExtensionArgs(char *output, int outputSize, const char *function, const char **argv, int argc);
 #else
     void RVExtension(char *output, int outputSize, const char *function);
+    int RVExtensionArgs(char *output, int outputSize, const char *function, const char **argv, int argc);
 #endif
 }
 
@@ -67,4 +73,36 @@ void RVExtension(char *output, int outputSize, const char *function)
             strncpy(output, "ERROR", outputSize);
         }
     }
+}
+
+#ifdef WIN32
+int __stdcall RVExtensionArgs(char *output, int outputSize, const char *function, const char **argv, int argc)
+#else
+int RVExtensionArgs(char *output, int outputSize, const char *function, const char **argv, int argc)
+#endif
+{
+    std::string s_function(function);
+    if (s_function == "unitPosition") {
+        auto status = eventProcessor.processUnitPosition(argv, argc);
+
+        if (status == ArgsProcessor::EVENT_OK) {
+            strncpy(output, "OK", outputSize);
+        } else if (status == ArgsProcessor::EVENT_CACHED) {
+            strncpy(output, "CACHED", outputSize);
+        }  else if (status == ArgsProcessor::EVENT_ERROR) {
+            strncpy(output, "ERROR", outputSize);
+        }
+    } else if (s_function == "vehiclePosition") {
+        auto status = eventProcessor.processVehiclePosition(argv, argc);
+
+        if (status == ArgsProcessor::EVENT_OK) {
+            strncpy(output, "OK", outputSize);
+        } else if (status == ArgsProcessor::EVENT_CACHED) {
+            strncpy(output, "CACHED", outputSize);
+        } else if (status == ArgsProcessor::EVENT_ERROR) {
+            strncpy(output, "ERROR", outputSize);
+        }
+    }
+
+    return 0;
 }
