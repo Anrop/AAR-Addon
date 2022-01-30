@@ -1,69 +1,19 @@
 # Anrop AAR Addon
 
-[![Build Status](https://travis-ci.org/Anrop/AAR-Addon.svg)](https://travis-ci.org/Anrop/AAR-Addon)
-
 Anrop AAR addon for Arma 3.
-This repository handles the game server side of the stats tracking by providing the in-game addon for gathering game related data and the library necessary to provision the data to a backend.
+This repository handles the game server side of the stats tracking by providing the in-game addon for gathering game related data and the extension necessary to provision the data to a backend.
 
-The library is written in C++ and depends on Boost C++.
-It has been written to support GCC and MSVC.
+The extension is written in Rust.
 
 ## Building
 
-* Conan is used to download required libraries.
-* CMake is used to build all binaries.
+Install Rust and Cargo, simplest way is to use [Rustup](https://rustup.rs/). This is used to compile the native extension.
 
-Make sure you have Python 3 and pip installed.
+Install [HEMTT](https://github.com/BrettMayson/HEMTT/releases). This is used to package the mod.
 
-Install Conan using `pip install conan` before using CMake
+Run `cargo build` to compile extension for current platform.
 
-### Linux
-
-You can build the project using CLion or other CMake compatible IDEs.
-
-```
-mkdir build
-cd build
-cmake ..
-make
-```
-
-#### 32 bit
-
-```
-cmake .. -DCMAKE_TOOLCHAIN_FILE=../linux32.cmake
-cmake --build .
-```
-
-#### 64 bit
-
-```
-cmake ..
-cmake --build .
-```
-
-### Windows
-
-You can also build the project using CLion, Visual Studio or other CMake compatible IDEs.
-
-```
-mkdir build
-cd build
-```
-
-#### 32 bit
-
-```
-cmake .. -G "Visual Studio 16 2019" -A Win32
-cmake --build .
-```
-
-#### 64 bit
-
-```
-cmake .. -G "Visual Studio 16 2019" -A x64
-cmake --build .
-```
+Run `hemtt build` to assemble Arma 3 files into PBOs.
 
 ## Config
 
@@ -72,6 +22,6 @@ The file should have the following format:
 ````json
 {
 	"authorization": "token authorization", // Optional
-	"hostname": "api.aar.anrop.se"
+	"url": "http://api.aar.anrop.se"
 }
 ````

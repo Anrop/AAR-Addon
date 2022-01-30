@@ -4,17 +4,17 @@ on: [push, pull_request]
 
 jobs:
   sqflint:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v2
 
       - uses: arma-actions/sqflint@v1.0
         name: Validate with SQFLint
 
   mod:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v1
 
       - name: HEMTT Build
         uses: docker://hemtt/hemtt:0.6.1
@@ -28,114 +28,99 @@ jobs:
           name: 'mod'
           path: releases/1.0.0/@anrop
 
-  extension-linux:
-    runs-on: ubuntu-18.04
+  extensions-linux:
+    runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v2
 
-      - name: Setup Python 3.7
-        uses: actions/setup-python@v1
+      - name: Install rust
+        uses: actions-rs/toolchain@v1
         with:
-          python-version: 3.7
+          toolchain: stable
 
-      - name: Install conan
-        run: pip install conan==1.24.1
-
-      - name: Install dependencies
+      - name: Install x86 dependencies
         run: |
           sudo dpkg --add-architecture i386
-          sudo apt-get update
-          sudo apt-get install -y g++-multilib
+          sudo apt update
+          sudo apt install -y gcc-multilib libssl-dev:i386 pkg-config:i386
+          rustup target add i686-unknown-linux-gnu
 
-      - name: Build Linux 32 bit
-        run: mkdir build-linux32 && cd build-linux32 && cmake -DCMAKE_TOOLCHAIN_FILE=../linux32.cmake -DCMAKE_BUILD_TYPE=Release .. && make && make test
+      - name: Cargo build x86
+        run: cargo build --release --target=i686-unknown-linux-gnu
 
-      - name: Build Linux 64 bit
-        run: mkdir build-linux64 && cd build-linux64 && cmake -DCMAKE_BUILD_TYPE=Release .. && make && make test
+      - name: Cargo build x86_64
+        run: cargo build --release --target=x86_64-unknown-linux-gnu
 
-      - name: Upload Linux 32 bit
-        uses: actions/upload-artifact@v1
+      - name: Copy built extensions
+        run: |
+          cp target/i686-unknown-linux-gnu/release/libanrop_aar.so anrop_aar.so
+          cp target/x86_64-unknown-linux-gnu/release/libanrop_aar.so anrop_aar_x64.so
+
+      - name: Upload Linux extensions
+        uses: actions/upload-artifact@v2
         with:
-          name: libanrop_aar.so
-          path: build-linux32/lib/libanrop_aar.so
+          name: extensions-linux
+          path: '*.so'
 
-      - name: Upload Linux 64 bit
-        uses: actions/upload-artifact@v1
-        with:
-          name: libanrop_aar_x64.so
-          path: build-linux64/lib/libanrop_aar_x64.so
-
-  extension-windows:
+  extensions-windows:
     runs-on: windows-2019
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v2
 
-      - name: Install conan
-        run: pip install conan==1.24.1
-
-      - name: Build Windows 32 bit
-        run: mkdir build-win32 && cd build-win32 && cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A Win32 .. && cmake --build . --config Release && cmake.exe --build . --target RUN_TESTS --config Release
-
-      - name: Build Windows 64 bit
-        run: mkdir build-win64 && cd build-win64 && cmake -DCMAKE_BUILD_TYPE=Release -G "Visual Studio 16 2019" -A x64 .. && cmake --build . --config Release && cmake --build . --target RUN_TESTS --config Release
-
-      - name: Upload Windows 32 bit
-        uses: actions/upload-artifact@v1
+      - name: Install rust
+        uses: actions-rs/toolchain@v1
         with:
-          name: anrop_aar.dll
-          path: build-win32/bin/anrop_aar.dll
+          toolchain: stable
 
-      - name: Upload Windows 64 bit
-        uses: actions/upload-artifact@v1
+      - name: Install x86 dependencies
+        run: rustup target add i686-pc-windows-msvc
+
+      - name: Cargo build x86
+        working-directory: extension
+        run: cargo build --release --target=i686-pc-windows-msvc
+
+      - name: Cargo build x86_64
+        working-directory: extension
+        run: cargo build --release --target=x86_64-pc-windows-msvc
+
+      - name: Copy built extensions
+        run: |
+          copy target/i686-pc-windows-msvc/release/anrop_aar.dll anrop_aar.dll
+          copy target/x86_64-pc-windows-msvc/release/anrop_aar.dll anrop_aar_x64.dll
+
+      - name: Upload Windows extensions
+        uses: actions/upload-artifact@v2
         with:
-          name: anrop_aar_x64.dll
-          path: build-win64/bin/anrop_aar_x64.dll
+          name: extensions-windows
+          path: '*.dll'
 
   package:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     needs:
-      - extension-linux
-      - extension-windows
+      - extensions-linux
+      - extensions-windows
       - mod
     steps:
       - name: Download mod
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v2
         with:
           name: 'mod'
           path: '@anrop_aar'
 
-      - name: Download Linux 32 bit
-        uses: actions/download-artifact@v1
+      - name: Download Linux extensions
+        uses: actions/download-artifact@v2
         with:
-          name: libanrop_aar.so
+          name: extensions-linux
           path: '@anrop_aar'
 
-      - name: Download Linux 64 bit
-        uses: actions/download-artifact@v1
+      - name: Download Windows extensions
+        uses: actions/download-artifact@v2
         with:
-          name: libanrop_aar_x64.so
-          path: '@anrop_aar'
-
-      - name: Rename Linux extension
-        run: |
-          set -e
-          mv @anrop_aar/libanrop_aar.so @anrop_aar/anrop_aar.so
-          mv @anrop_aar/libanrop_aar_x64.so @anrop_aar/anrop_aar_x64.so
-
-      - name: Download Windows 32 bit
-        uses: actions/download-artifact@v1
-        with:
-          name: anrop_aar.dll
-          path: '@anrop_aar'
-
-      - name: Download Windows 64 bit
-        uses: actions/download-artifact@v1
-        with:
-          name: anrop_aar_x64.dll
+          name: extensions-windows
           path: '@anrop_aar'
 
       - name: Upload built mod
-        uses: actions/upload-artifact@1.0.0
+        uses: actions/upload-artifact@v2
         with:
           name: '@anrop_aar'
           path: '.'

@@ -1,0 +1,17 @@
+[package]
+name = "anrop-aar"
+version = "0.0.0"
+authors = ["Björn Dahlgren <bjorn@dahlgren.io>"]
+edition = "2021"
+
+[lib]
+name = "anrop_aar"
+crate-type = ["cdylib"]
+
+[dependencies]
+arma-rs = "1.5"
+chrono = "0.4"
+lazy_static = "1.4"
+reqwest = { version = "0.11", features = ["blocking", "json"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"

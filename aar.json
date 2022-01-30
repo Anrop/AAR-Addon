@@ -1,4 +1,4 @@
 {
 	"authorization": "token authorization",
-	"hostname": "api.aar.anrop.se"
+	"url": "https://api.aar.anrop.se"
 }

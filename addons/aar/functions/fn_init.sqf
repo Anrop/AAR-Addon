@@ -21,7 +21,7 @@ if (!isServer) exitWith {
 };
 
 // Initialize plugin. Get unique ID from server
-private _init = anrop_aar_extension callExtension format["init"];
+(anrop_aar_extension callExtension ["init", []]) select 0;
 
 if (_init == "") exitWith {
 	diag_log "[Anrop AAR] extension could not be found";
@@ -34,8 +34,7 @@ if (_init == "ERROR") exitWith {
 diag_log format ["[Anrop AAR] initialized: %1", _init];
 
 private _mission = call anrop_aar_fnc_serializeMission;
-private _missionData = _mission call anrop_aar_fnc_serializeJson;
-anrop_aar_id = anrop_aar_extension callExtension format["mission;%1", _missionData];
+anrop_aar_id = anrop_aar_extension callExtension ["mission", _mission];
 diag_log format ["[Anrop AAR] mission id: %1", anrop_aar_id];
 
 // Add mission events
