@@ -1,1 +1,1 @@
-anrop_aar_extension callExtension format["event;%1", _this];
+anrop_aar_extension callExtension ["event", [_this]];
